@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Stephen Strang</title>
+
+    <meta
+        name="description"
+        content="Stephen Strang — data, analytics, and technology."
+    >
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <main class="splash">
+
+        <header class="splash-header">
+            <h1 class="splash-title">
+                stephenstrang.com
+            </h1>
+        </header>
+
+        <section class="splash-status">
+            <p>
+                <span aria-hidden="true">&gt;</span>
+                site_status
+            </p>
+
+            <p>
+                under construction
+            </p>
+        </section>
+
+        <nav class="splash-links" aria-label="External links">
+            <a href="https://github.com/sstrang15">
+                github
+            </a>
+
+            <a href="https://linkedin.com/in/stephenecon">
+                linkedin
+            </a>
+
+            <a href="mailto:strangstep11@gmail.com">
+                email
+            </a>
+        </nav>
+
+        <section class="updates">
+            <button
+                class="updates-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="updates-form"
+            >
+                get updates
+            </button>
+
+            <form
+                id="updates-form"
+                class="updates-form"
+                hidden
+            >
+                <label for="email">
+                    email:
+                </label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                >
+
+                <button type="submit">
+                    subscribe
+                </button>
+
+                <p
+                    class="updates-message"
+                    aria-live="polite"
+                ></p>
+            </form>
+        </section>
+
+    </main>
+
+    <script type="module" src="./js/main.js"></script>
+
+</body>
+
+</html>
