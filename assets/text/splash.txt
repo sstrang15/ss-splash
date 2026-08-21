@@ -1,1 +1,7 @@
-splash.txt
+Welcome to stephenstrang.com.
+
+This is{4} a small public experiment.
+
+The full site is still under construction.
+
+For now, look around,{2} stay curious,{5} and you should subscribe for updates.

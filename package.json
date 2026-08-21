@@ -1,0 +1,25 @@
+{
+  "name": "ss-splash",
+  "version": "1.0.0",
+  "description": "A temporary public landing experience for stephenstrang.com while the full SS-site is under construction.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sstrang15/ss-splash.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sstrang15/ss-splash/issues"
+  },
+  "homepage": "https://github.com/sstrang15/ss-splash#readme",
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
+}

@@ -12,6 +12,7 @@
         content="Stephen Strang — data, analytics, and technology."
     >
 
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -36,6 +37,10 @@
             </p>
         </section>
 
+        <section class="splash-message">
+            <div id="splash-output"></div>
+        </section>
+
         <nav class="splash-links" aria-label="External links">
             <a href="https://github.com/sstrang15">
                 github
@@ -49,44 +54,6 @@
                 email
             </a>
         </nav>
-
-        <section class="updates">
-            <button
-                class="updates-trigger"
-                type="button"
-                aria-expanded="false"
-                aria-controls="updates-form"
-            >
-                get updates
-            </button>
-
-            <form
-                id="updates-form"
-                class="updates-form"
-                hidden
-            >
-                <label for="email">
-                    email:
-                </label>
-
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    required
-                >
-
-                <button type="submit">
-                    subscribe
-                </button>
-
-                <p
-                    class="updates-message"
-                    aria-live="polite"
-                ></p>
-            </form>
-        </section>
 
     </main>
 

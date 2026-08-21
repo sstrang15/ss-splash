@@ -1,41 +1,15 @@
 import { initializeTyping } from "./typing.js";
 import { initializeSound } from "./sound.js";
 import { initializeNewsletter } from "./newsletter.js";
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
 
 
-const updatesTrigger = document.querySelector(
-    ".updates-trigger"
-);
 
-const updatesForm = document.querySelector(
-    ".updates-form"
-);
+const response = await fetch("/assets/text/splash.txt");
+const splashText = await response.text();
 
+const splashOutput = document.querySelector("#splash-output");
 
-/* =========================================================
-   UPDATES INTERACTION
-   ========================================================= */
-
-
-/**
- * Opens and closes the updates form.
- */
-updatesTrigger.addEventListener("click", () => {
-
-    const isOpen =
-        updatesTrigger.getAttribute("aria-expanded") === "true";
-
-    updatesTrigger.setAttribute(
-        "aria-expanded",
-        String(!isOpen)
-    );
-
-    updatesForm.hidden = isOpen;
-
-});
+await initializeTyping(splashOutput, splashText);
 
 // main.js
 // │
@@ -48,16 +22,16 @@ updatesTrigger.addEventListener("click", () => {
 // ├── calls sound functions
 // └── coordinates everything
 
-await typeText("stephenstrang.com", fast);
+// await typeText("stephenstrang.com", fast);
 
-await pause(300);
+// await pause(300);
 
-await typeText("> checking status", fast);
+// await typeText("> checking status", fast);
 
-await pause(700);
+// await pause(700);
 
-await typeText("...", slow);
+// await typeText("...", slow);
 
-await pause(1000);
+// await pause(1000);
 
-await typeText("under construction", fast);
+// await typeText("under construction", fast);
