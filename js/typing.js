@@ -21,10 +21,10 @@ const pauseScale = {
     20: 4500
 };
 
-const firstSentenceSpeed = 25;
+const firstSentenceSpeed = 30;
 const normalSpeed = 35;
-const firstSentencePause = 1200;
-const sentencePause = 300;
+const firstSentencePause = 750;
+const sentencePause = 250;
 
 
 
@@ -49,6 +49,12 @@ export async function initializeTyping(element, text) {
 		}
 
 		const character = text[index];
+
+		console.log(
+		    character,
+		    firstSentence,
+		    firstSentence ? firstSentenceSpeed : normalSpeed
+		);
 
 		await new Promise(resolve =>
 		    setTimeout(
@@ -75,6 +81,12 @@ export async function initializeTyping(element, text) {
 		                : sentencePause
 		        )
 		    );
+
+		if (firstSentence) {
+		    element.classList.add("message-small");
+		}
+
+		firstSentence = false;
 
 		    firstSentence = false;
 		}

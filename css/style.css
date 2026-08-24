@@ -1,0 +1,98 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f5f6f4;
+    color: #161918;
+    /*background: #f4f2ed;
+    color: #171717;*/
+    font-family: "Courier New", Courier, monospace;
+}
+
+.splash {
+    position: relative;
+    min-height: 100vh;
+    padding: 32px 40px;
+}
+
+.splash-brand,
+.splash-links,
+#splash-output {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Small site identifier — top left */
+
+.splash-brand {
+    position: absolute;
+    top: 32px;
+    left: 40px;
+
+    font-size: 0.9rem;
+}
+
+/* Links — top right */
+
+.splash-links {
+    position: absolute;
+    top: 32px;
+    right: 40px;
+
+    display: flex;
+    gap: 24px;
+}
+
+/* Status + primary message */
+
+.splash-content {
+    width: min(1100px, 82vw);
+    margin: 0 auto;
+    padding-top: 110px;
+}
+
+/* > site_status
+   under construction */
+
+.splash-status {
+    margin-bottom: 40px;
+}
+
+.splash-status p {
+    margin: 0;
+}
+
+#status-command {
+    color: #5f5f5f;
+}
+/* Main typed message */
+
+.splash-message {
+    width: 100%;
+}
+
+#splash-output {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: clamp(2.25rem, 3.5vw, 4rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.5;
+    color: #343434;
+}
+
+
+#status-value {
+    color: #a66a32;
+}
+
+.splash-links a {
+    color: #5f5f5f;
+}
+
+.splash-brand {
+    color: #707070;
+}

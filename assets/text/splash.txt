@@ -1,7 +1,5 @@
-Welcome to stephenstrang.com.
-
-This is{4} a small public experiment.
-
-The full site is still under construction.
-
-For now, look around,{2} stay curious,{5} and you should subscribe for updates.
+This is stephen strang's site in the future.
+Work is underway.
+It starts{11} with data.
+Take a look around. To stay updated on the future ... please enter email below.
+Updates are going to be soon.

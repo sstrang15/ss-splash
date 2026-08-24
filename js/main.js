@@ -7,8 +7,12 @@ import { initializeNewsletter } from "./newsletter.js";
 const response = await fetch("/assets/text/splash.txt");
 const splashText = await response.text();
 
+const statusCommand = document.querySelector("#status-command");
+const statusValue = document.querySelector("#status-value");
 const splashOutput = document.querySelector("#splash-output");
 
+await initializeTyping(statusCommand, "> site_status");
+await initializeTyping(statusValue, "under construction");
 await initializeTyping(splashOutput, splashText);
 
 // main.js
