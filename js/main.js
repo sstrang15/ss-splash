@@ -10,10 +10,15 @@ const splashText = await response.text();
 const statusCommand = document.querySelector("#status-command");
 const statusValue = document.querySelector("#status-value");
 const splashOutput = document.querySelector("#splash-output");
+const emailPrompt = document.querySelector(".email-prompt");
+const emailInput = document.querySelector("#email-input");
 
 await initializeTyping(statusCommand, "> site_status");
 await initializeTyping(statusValue, "under construction");
 await initializeTyping(splashOutput, splashText);
+await initializeTyping(emailPrompt, "> Enter");
+
+emailInput.style.visibility = "visible";
 
 // main.js
 // │

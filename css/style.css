@@ -41,7 +41,6 @@ body {
     position: absolute;
     top: 32px;
     right: 40px;
-
     display: flex;
     gap: 24px;
 }
@@ -51,7 +50,7 @@ body {
 .splash-content {
     width: min(1100px, 82vw);
     margin: 0 auto;
-    padding-top: 110px;
+    padding-top: 200px;
 }
 
 /* > site_status
@@ -77,9 +76,9 @@ body {
 #splash-output {
     margin: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: clamp(2.25rem, 3.5vw, 4rem);
+    font-size: clamp(2.15rem, 3.5vw, 5rem);
     font-weight: 400;
-    letter-spacing: -0.02em;
+    letter-spacing: +.02em;
     line-height: 1.5;
     color: #343434;
 }
@@ -95,4 +94,40 @@ body {
 
 .splash-brand {
     color: #707070;
+}
+
+.splash-email {
+    margin-top: 36px;
+    min-height: 60px;
+
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+
+    font-family: "Courier New", Courier, monospace;
+    font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+}
+
+.email-prompt {
+    color: #555;
+}
+
+#email-input {
+    flex: 1;
+    min-width: 0;
+    visibility: hidden;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+
+    font: inherit;
+    color: #343434;
+
+    caret-color: #343434;
+}
+
+#email-input::placeholder {
+    color: #d0d0d0;
+    opacity: 1;
 }
