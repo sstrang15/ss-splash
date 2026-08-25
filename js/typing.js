@@ -50,11 +50,11 @@ export async function initializeTyping(element, text) {
 
 		const character = text[index];
 
-		console.log(
-		    character,
-		    firstSentence,
-		    firstSentence ? firstSentenceSpeed : normalSpeed
-		);
+		// console.log(
+		//     character,
+		//     firstSentence,
+		//     firstSentence ? firstSentenceSpeed : normalSpeed
+		// );
 
 		await new Promise(resolve =>
 		    setTimeout(
@@ -92,6 +92,9 @@ export async function initializeTyping(element, text) {
 		}
 
 	}
-	console.log(element)
+	console.log({
+	    element,
+	    text
+	});
 	return element
 }

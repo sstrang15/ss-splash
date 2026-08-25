@@ -33,8 +33,10 @@
 
             <section class="splash-message">
                 <h1 id="splash-output"></h1>
+                <span id="splash-text" class="message-type"></span><span class="typing-cursor message-type"></span>
             </section>
-            <section class="splash-email">
+
+            <form class="splash-email" id="newsletter-form">
                 <span class="email-prompt"></span>
 
                 <input
@@ -44,7 +46,10 @@
                     placeholder="email@example.com"
                     autocomplete="email"
                 >
-            </section>
+
+                <div id="newsletter-status"></div>
+            </form>
+
         </div>
 
         <nav class="splash-links" aria-label="External links">

@@ -25,6 +25,14 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+
+.message-type {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: clamp(2.75rem, 4vw, 5rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #343434;
+}
 /* Small site identifier — top left */
 
 .splash-brand {
@@ -32,7 +40,7 @@ body {
     top: 32px;
     left: 40px;
 
-    font-size: 0.9rem;
+    font-size: 1.3rem;
 }
 
 /* Links — top right */
@@ -50,7 +58,7 @@ body {
 .splash-content {
     width: min(1100px, 82vw);
     margin: 0 auto;
-    padding-top: 200px;
+    padding-top: 100px;
 }
 
 /* > site_status
@@ -75,14 +83,12 @@ body {
 
 #splash-output {
     margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: clamp(2.15rem, 3.5vw, 5rem);
     font-weight: 400;
-    letter-spacing: +.02em;
+    letter-spacing: 0.02em;
     line-height: 1.5;
     color: #343434;
 }
-
 
 #status-value {
     color: #a66a32;
@@ -94,6 +100,14 @@ body {
 
 .splash-brand {
     color: #707070;
+}
+
+#splash-text {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: clamp(2.2rem, 4vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #343434;
 }
 
 .splash-email {
@@ -130,4 +144,31 @@ body {
 #email-input::placeholder {
     color: #d0d0d0;
     opacity: 1;
+}
+
+#newsletter-status.success {
+    color: green;
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 0.40em;
+    height: 0.9em;
+    margin-left: 0.08em;
+    background: #161918;
+    vertical-align: -0.08em;
+
+    animation: cursor-blink 0.8s step-end infinite;
+}
+
+@keyframes cursor-blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
 }
