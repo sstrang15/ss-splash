@@ -119,6 +119,9 @@ async function submitEmail(email) {
         },
         body: JSON.stringify({ email })
     });
-    console.log(response.json())
-    return response.json();
+    const data = await response.json();
+
+    console.log(data);
+
+    return data;
 }
