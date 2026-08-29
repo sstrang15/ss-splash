@@ -66,6 +66,7 @@ export function initializeNewsletter() {
 
 		try {
 		    // TEMPORARY until newsletter service is connected:
+		    console.log(email)
 			const response = await submitEmail(email);
 		    // const response = await submitEmail(email);
 
@@ -118,6 +119,6 @@ async function submitEmail(email) {
         },
         body: JSON.stringify({ email })
     });
-
+    console.log(response.json())
     return response.json();
 }
