@@ -111,16 +111,13 @@ async function verifyEmail(email) {
 async function submitEmail(email) {
 	console.log("email being submitted:", email);
 
-	return {
-	    ok: true
-	};
-    // const response = await fetch("/api/subscribe", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({ email })
-    // });
+    const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+    });
 
-    // return response.json();
+    return response.json();
 }
