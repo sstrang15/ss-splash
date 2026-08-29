@@ -4,7 +4,7 @@
 // └── eventually communicate with service
 
 export function initializeNewsletter() {
-
+	console.log("newsletter initialized");
   	const state = {
         initialized: false,
         status: "ready",
@@ -20,12 +20,12 @@ export function initializeNewsletter() {
 
 	state.initialized = true;
 
-	console.log({
-	    state,
-	    form,
-	    emailInput,
-	    newsletterStatus
-	});
+	// console.log({
+	//     state,
+	//     form,
+	//     emailInput,
+	//     newsletterStatus
+	// });
 
 
 	form.addEventListener("submit", async (event) => {
@@ -66,10 +66,7 @@ export function initializeNewsletter() {
 
 		try {
 		    // TEMPORARY until newsletter service is connected:
-		    const response = {
-		        ok: true
-		    };
-
+			const response = await submitEmail(email);
 		    // const response = await submitEmail(email);
 
 		    if (response.ok) {
@@ -104,5 +101,26 @@ async function verifyEmail(email) {
 
     // receive verification result
 
+	const verification = {
+	    status: "valid"
+	};
+
     return verification;
+}
+
+async function submitEmail(email) {
+	console.log("email being submitted:", email);
+
+	return {
+	    ok: true
+	};
+    // const response = await fetch("/api/subscribe", {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({ email })
+    // });
+
+    // return response.json();
 }

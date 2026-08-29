@@ -20,6 +20,7 @@ await initializeTyping(emailPrompt, "> Enter");
 
 emailInput.style.visibility = "visible";
 
+initializeNewsletter();
 // main.js
 // │
 // ├── DOM elements

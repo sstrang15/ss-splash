@@ -40,7 +40,7 @@ body {
     top: 32px;
     left: 40px;
 
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 /* Links — top right */
@@ -114,10 +114,6 @@ body {
     margin-top: 36px;
     min-height: 60px;
 
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-
     font-family: "Courier New", Courier, monospace;
     font-size: clamp(1.8rem, 2.5vw, 2.6rem);
 }
@@ -146,6 +142,19 @@ body {
     opacity: 1;
 }
 
+.email-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+}
+
+#newsletter-status {
+    margin-top: 8px;
+    margin-left: 2ch;
+    font-family: "Courier New", Courier, monospace;
+    color: #5f5f5f;
+    display: flex;
+}
 #newsletter-status.success {
     color: green;
 }
