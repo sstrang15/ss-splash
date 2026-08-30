@@ -1,12 +1,23 @@
 // subscribe.js
 
-export default async function subscribe(request, response) {
-	console.log("SUBSCRIBE.JS WAS CALLED");
-    const { email } = request.body;
+import { Resend } from 'resend';
 
-    console.log("received email:", email);
 
-    return response.status(200).json({
-        ok: true
-    });
-}
+const resend = new Resend(
+    process.env.strangnewsletter_RESEND_API_KEY
+);
+
+console.log({
+    hasResendKey: !!process.env.strangnewsletter_RESEND_API_KEY
+});
+
+// export default async function subscribe(request, response) {
+// 	console.log("SUBSCRIBE.JS WAS CALLED");
+//     const { email } = request.body;
+
+//     console.log("received email:", email);
+
+//     return response.status(200).json({
+//         ok: true
+//     });
+// }

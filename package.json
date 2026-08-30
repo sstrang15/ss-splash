@@ -21,5 +21,8 @@
   "homepage": "https://github.com/sstrang15/ss-splash#readme",
   "devDependencies": {
     "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "resend": "^6.25.0"
   }
 }
