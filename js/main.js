@@ -20,8 +20,38 @@ await initializeTyping(emailPrompt, "> Enter");
 
 emailInput.style.visibility = "visible";
 
-initializeNewsletter();
-// main.js
+const questionTrack = [
+    {
+        key: "name",
+        prompt: "What is your first name",
+        submittedText: "first name submitted."
+    },
+    {
+        key: "birth",
+        prompt: "Your birth month?",
+        submittedText: "birth month submitted."
+    },
+   	{
+        key: "college",
+        prompt: "What college do you root for",
+        submittedText: "favorite college submitted."
+    },
+    {
+        key: "color",
+        prompt: "your favorite color is?",
+        submittedText: "favorite color submitted."
+    },
+    {
+        key: "state",
+        prompt: "what state you grew up in",
+        submittedText: "state submitted."
+    }
+];
+
+initializeNewsletter(async (questionTrack) => {
+
+});
+
 // │
 // ├── DOM elements
 // ├── page initialization
