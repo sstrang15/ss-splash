@@ -48,9 +48,7 @@ const questionTrack = [
     }
 ];
 
-initializeNewsletter(async (questionTrack) => {
-
-});
+initializeNewsletter();
 
 // │
 // ├── DOM elements

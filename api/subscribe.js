@@ -31,14 +31,12 @@ export default async function subscribe(request, response) {
     // const email = getEmail(request);
     const { email } = request.body;
 
-    console.log(request)
-
     // sendWelcomeEmail(email)
 
     // if (request.method !== "POST") {
     //     return response.status(405).json({ ok: false});
     // }
-
+    
     return response.status(200).json({
         ok: true
     });

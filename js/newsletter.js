@@ -1,191 +1,112 @@
-import { initializeTyping } from "./typing.js";
-
-
 export async function initializeNewsletter() {
 
-	const answers = {};
+    console.log("newsletter initialized");
 
-	console.log("newsletter initialized");
-
-  	const state = {
+    const state = {
         initialized: false,
         status: "ready",
         previousAttempt: null,
         currentEmail: "",
         verificationStatus: null,
-        message: "",
-        currentQuestion: 0
+        message: ""
     };
 
-	const form = document.querySelector("#newsletter-form");
-	const emailInput = document.querySelector("#email-input")
-	const newsletterStatus = document.querySelector("#newsletter-status");
+    const form = document.querySelector("#newsletter-form");
+    const emailInput = document.querySelector("#email-input");
+    const newsletterStatus = document.querySelector("#newsletter-status");
 
-	state.initialized = true;
-
-	// console.log({
-	//     state,
-	//     form,
-	//     emailInput,
-	//     newsletterStatus
-	// });
+    state.initialized = true;
 
 
-	form.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async (event) => {
 
-		event.preventDefault();
+        event.preventDefault();
 
-		if (state.status === "questioning") {
-		    // process QUESTION submission
-		    return;
-		}
+        newsletterStatus.classList.remove("success");
 
-		newsletterStatus.classList.remove("success");
-
-		const email = emailInput.value.trim();
+        const email = emailInput.value.trim();
 
 
-		if (!email) {
-		    newsletterStatus.textContent = "Nothing was submitted.";
-		    state.status = "empty";
-		    return;
-		}
+        if (!email) {
+            newsletterStatus.textContent = "Nothing was submitted.";
+            state.status = "empty";
+            return;
+        }
 
-		state.currentEmail = email;
-		state.status = "verifying";
+        state.currentEmail = email;
+        state.status = "verifying";
+        newsletterStatus.textContent = "Checking...";
 
-		newsletterStatus.textContent = "Checking...";
+        const verification = await verifyEmail(email);
+        state.verificationStatus = verification.status;
 
-		const verification = await verifyEmail(email);
+        if (verification.status !== "valid") {
+            state.status = "invalid";
 
-		state.verificationStatus = verification.status;
+            newsletterStatus.textContent = "It appears this email is not working.";
 
+            return;
+        }
 
-		if (verification.status !== "valid") {
-		    state.status = "invalid";
+        state.status = "submitting";
+        newsletterStatus.textContent = "Submitting...";
 
-		    newsletterStatus.textContent = "It appears this email is not working.";
+        let response;
 
-		    return;   
-		}
+        try {
 
+            response = await submitEmail(email);
+            console.log(response.ok)
 
-		state.status = "submitting"
+            if (response.ok) {
 
-		newsletterStatus.textContent = "Submitting...";
+                state.status = "success";
+                newsletterStatus.textContent = "Successful submission.";
+                newsletterStatus.classList.add("success");
 
-		try {
+                form.reset();
 
-			const response = await submitEmail(email);
+                return;
 
+            } else {
 
-		    if (response.ok) {
+                state.status = "error";
+            }
 
-		        state.status = "success";
+        } catch (error) {
 
-		        newsletterStatus.textContent =
-		            "Successful submission.";
-
-	            newsletterStatus.classList.add("success");
-
-	            form.reset();
-
-	            const question = questionTrack[state.currentQuestion];
-
-	            const questionElement = createFollowupQuestion();
-
-	            await initializeTyping(questionElement,question.prompt);
-
-	            createFollowupInput();
-
-	            state.status = "questioning";
-
-	            return
-
-		    } else {
-		        state.status = "error";
-
-		        newsletterStatus.textContent = "It appears this email could not be submitted.";
-
-		    }
-		} catch (error) {
-		    state.status = "error";
-
-		    newsletterStatus.textContent = "It appears this email could not be submitted.";
-
-		}
-
-	})
-
-	followupForm.addEventListener("submit", handleQuestionSubmit);
-
+            state.status = "error";
+            console.error(error);
+            console.log(response);
+            newsletterStatus.textContent = "Something went wrong. Please try again.";
+        }
+    });
 }
+
 
 async function verifyEmail(email) {
 
-    // send email to verification service
-
-    // receive verification result
-
-	const verification = {
-	    status: "valid"
-	};
+    const verification = {
+        status: "valid"
+    };
 
     return verification;
 }
 
-async function submitEmail(email, answers) {
-	console.log("email being submitted:", email);
+
+async function submitEmail(email) {
+
+    console.log("email being submitted:", email);
 
     const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, answers })
+        body: JSON.stringify({ email })
     });
+
     const data = await response.json();
 
-    console.log(data);
-
     return data;
-}
-
-function createFollowupInput() {
-
-	const followup = document.querySelector("#followup");
-
-	const answer = document.createElement("div");
-	followup.id = "followup"
-
-	const prompt = document.createElement("span");
-	prompt.textContent = "> Enter";
-
-	const input = document.createElement("input");
-
-	answer.appendChild(prompt);
-	answer.appendChild(input);
-	
-	followup.appendChild(answer)
-
-	return input
-}
-
-function createFollowupQuestion() {
-
-    const form = document.querySelector("#newsletter-form");
-
-    const followup = document.createElement("div");
-    followup.id = "followup";
-
-    const question = document.createElement("div");
-
-    followup.appendChild(question);
-    form.appendChild(followup);
-
-    return question;
-}
-
-async function handleQuestionSubmit(event) {
-	const followup = document.querySelector("#followup")
 }
