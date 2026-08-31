@@ -126,6 +126,10 @@ body {
     flex: 1;
     min-width: 0;
     visibility: hidden;
+}
+
+#email-input,
+#followup input {
     padding: 0;
     border: 0;
     outline: 0;
@@ -133,11 +137,11 @@ body {
 
     font: inherit;
     color: #343434;
-
     caret-color: #343434;
 }
 
-#email-input::placeholder {
+#email-input::placeholder,
+#followup input::placeholder {
     color: #d0d0d0;
     opacity: 1;
 }
@@ -148,15 +152,84 @@ body {
     gap: 14px;
 }
 
+.splash-email,
+#followup-form,
+#question-intro-form {
+    min-height: 60px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+}
+
+.splash-email {
+    margin-top: 36px;
+}
+
 #newsletter-status {
-    margin-top: 8px;
-    margin-left: 2ch;
     font-family: "Courier New", Courier, monospace;
     color: #5f5f5f;
     display: flex;
 }
 #newsletter-status.success {
     color: green;
+}
+
+#question-intro-form {
+
+}
+
+#question-intro {
+    margin-top: 32px;
+}
+
+#question-intro .followup-question {
+    margin-bottom: 12px;
+    color: #343434;
+}
+
+.question-intro-choices {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+}
+
+.intro-suggestion {
+    color: #d0d0d0;
+}
+
+.question-intro-choices input {
+    margin: 0;
+}
+
+.question-intro-choices label {
+    color: #555;
+    cursor: pointer;
+}
+
+#followup-form input {
+
+    font: inherit;
+}
+
+#followup input {
+    width: 14ch;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+
+    font: inherit;
+    color: #343434;
+    caret-color: #343434;
+}
+
+.followup-question {
+
+}
+
+.followup-answer {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 14px;
 }
 
 .typing-cursor {

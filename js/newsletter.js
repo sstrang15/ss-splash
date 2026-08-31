@@ -1,3 +1,6 @@
+import { initializeQuestions } from "./questions.js"
+
+
 export async function initializeNewsletter() {
 
     console.log("newsletter initialized");
@@ -64,8 +67,12 @@ export async function initializeNewsletter() {
                 newsletterStatus.textContent = "Successful submission.";
                 newsletterStatus.classList.add("success");
 
-                form.reset();
+                await new Promise(resolve => setTimeout(resolve, 1200));
+                form.reset()
+                form.remove();
 
+                initializeQuestions();
+    
                 return;
 
             } else {

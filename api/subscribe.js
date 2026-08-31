@@ -11,17 +11,6 @@ import { Resend } from 'resend';
 //     hasResendKey: !!process.env.strangnewsletter_RESEND_API_KEY
 // });
 
-// export default async function subscribe(request, response) {
-// 	console.log("SUBSCRIBE.JS WAS CALLED");
-//     const { email } = request.body;
-
-//     console.log("received email:", email);
-
-//     return response.status(200).json({
-//         ok: true
-//     });
-// }
-
 export default async function subscribe(request, response) {
 
     const resend = new Resend(
@@ -36,7 +25,7 @@ export default async function subscribe(request, response) {
     // if (request.method !== "POST") {
     //     return response.status(405).json({ ok: false});
     // }
-    
+
     return response.status(200).json({
         ok: true
     });

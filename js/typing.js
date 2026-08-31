@@ -23,8 +23,8 @@ const pauseScale = {
 
 const firstSentenceSpeed = 30;
 const normalSpeed = 35;
-const firstSentencePause = 750;
-const sentencePause = 250;
+const firstSentencePause = 40;
+const sentencePause = 50;
 
 
 
