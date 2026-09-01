@@ -23,35 +23,49 @@ function parseQuestions(csv){
 	let questions = [];
 	const rows = csv.trim().split("\n");
 	const headers = rows[0].split(",")
+    
 	let insideQuotes = false;
 	let question = {};
 	let text = "";
+
 	for (let i = 1; i < rows.length; i++) {
 
 		let row = rows[i]
 		let comma_counter = 0;
 
-		for (const character of row) {
-			// console.log(character)
-			if (character == "\"" && !insideQuotes) {
-				// console.log(character)
+        for (let j = 0; j < row.length; j++) {
+
+            const character = row[j];
+            const nextCharacter = row[j + 1];
+
+			if (character === "\"" && insideQuotes && nextCharacter === "\"") {
+
+                text += "\"";
+                j++;
+
+            } else if (character == "\"" && !insideQuotes) {
+
 				insideQuotes = true;
 
 			} else if (character == "\"" && insideQuotes) {
 
 				insideQuotes = false;
 
-				question[headers[comma_counter]] = text
-				text = ""
-
 			} else if (character == "," && !insideQuotes) {
+                
+                question[headers[comma_counter]] = text
+                text = ""
 				comma_counter++;
 
 			} else {
-				text += character
-
+				
+                text += character
 			}
 		}
+
+        question[headers[comma_counter]] = text
+        text = ""
+
 		questions.push(question)
 		question = {}
 	}
@@ -64,11 +78,8 @@ function parseQuestions(csv){
 export async function initializeQuestions() {
 
     console.log("questions initialized");
-
     const csv = await loadQuestions();
-
     questionTrack = parseQuestions(csv);
-
     state.initialized = true;
 
     const consent = await createQuestionIntro();
@@ -76,18 +87,22 @@ export async function initializeQuestions() {
     if (consent === "yes") {
 
         state.status = "questions";
-
-        const question = questionTrack[state.currentQuestion];
-
-        createFollowupQuestion(question);
-        createFollowupInput(question);
+        await loadCurrentQuestion();
     } else {
 
         state.status = "declined";
     }
 }
 
-function createQuestionIntro() {
+async function loadCurrentQuestion() {
+
+    const question = questionTrack[state.currentQuestion];
+
+    await createFollowupQuestion(question);
+    await createFollowupInput(question);
+}
+
+async function createQuestionIntro() {
 
     const splashMessage = document.querySelector(".splash-message");
 
@@ -100,28 +115,20 @@ function createQuestionIntro() {
     const message = document.createElement("div");
     message.className = "followup-question";
 
-    message.textContent =
-        "We're putting together something cool and would like to ask you a few quick questions.";
-
     const prompt = document.createElement("span");
     prompt.className = "email-prompt";
-    prompt.textContent = "> Enter";
 
     const choices = document.createElement("div");
     choices.className = "question-intro-choices";
 
-
     const yes = document.createElement("input");
-    yes.type = "radio";
+    yes.type = "radio"
     yes.name = "question-consent";
     yes.value = "yes";
     yes.id = "question-consent-yes";
 
-
     const yesLabel = document.createElement("label");
     yesLabel.htmlFor = "question-consent-yes";
-    yesLabel.textContent = "Yes";
-
 
     const no = document.createElement("input");
     no.type = "radio";
@@ -129,19 +136,10 @@ function createQuestionIntro() {
     no.value = "no";
     no.id = "question-consent-no";
 
-
     const noLabel = document.createElement("label");
     noLabel.htmlFor = "question-consent-no";
-    noLabel.textContent = "No";
-
 
     choices.appendChild(prompt);
-
-    choices.appendChild(yes);
-    choices.appendChild(yesLabel);
-
-    choices.appendChild(no);
-    choices.appendChild(noLabel);
 
     intro.appendChild(message);
     intro.appendChild(choices);
@@ -149,6 +147,20 @@ function createQuestionIntro() {
     introForm.appendChild(intro);
 
     splashMessage.appendChild(introForm);
+
+    await initializeTyping(message, "We're putting together something cool and would like to ask you a few quick questions.", 1)
+
+    await initializeTyping(prompt, "> Enter", 2)
+
+    choices.appendChild(yesLabel);
+    choices.appendChild(yes);
+
+    await initializeTyping(yesLabel, "yes", 1)
+
+    choices.appendChild(noLabel);
+    choices.appendChild(no);
+
+    await initializeTyping(noLabel, "no", 1)
 
     console.log("Question intro created");
 
@@ -196,20 +208,25 @@ function handleQuestionSubmit(event) {
     	status.textContent = "Answer not provided."
         return;
     } else {
-    	status.textContent = `${question.key} been provided`
+    	initializeTyping(status, `${question.key} been provided`, 1)
     }
 
     // answers[question.key] = answer;
 
     state.currentQuestion++
 
-    form.reset()
+    if (questionTrack[state.currentQuestion]) {
+        form.remove()
+        loadCurrentQuestion()
+    } else {
+        status.textContent = "Thank you for your submissions."
+    }
 
     console.log("Question answer:", answer);
 }
 
 
-function createFollowupQuestion(question) {
+async function createFollowupQuestion(question) {
 	console.log(question)
     const followupForm = document.createElement("form");
     const splashMessage = document.querySelector(".splash-message")
@@ -221,18 +238,19 @@ function createFollowupQuestion(question) {
 
     const questionElement = document.createElement("div");
     questionElement.className = "followup-question";
-    questionElement.textContent = question.prompt;
 
     followup.appendChild(questionElement);
     followupForm.appendChild(followup);
     splashMessage.appendChild(followupForm);
+
+    await initializeTyping(questionElement, question.prompt, 1);
 
     followupForm.addEventListener("submit", handleQuestionSubmit);
     console.log("Followup form created")
 }
 
 
-function createFollowupInput(question) {
+async function createFollowupInput(question) {
 
     const followup = document.querySelector("#followup");
 
@@ -241,8 +259,7 @@ function createFollowupInput(question) {
 
     const prompt = document.createElement("span");
     prompt.className = "email-prompt";
-    prompt.textContent = "> Enter";
-
+    
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = question.key;
@@ -255,6 +272,8 @@ function createFollowupInput(question) {
     row.appendChild(questionStatus);
 
     followup.appendChild(row);
+
+    await initializeTyping(prompt, "> Enter", 2)
 
     input.focus();
 

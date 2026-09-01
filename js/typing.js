@@ -28,7 +28,7 @@ const sentencePause = 50;
 
 
 
-export async function initializeTyping(element, text) {
+export async function initializeTyping(element, text, speed) {
 	
 	let firstSentence = true;
 	element.textContent = "";
@@ -40,7 +40,8 @@ export async function initializeTyping(element, text) {
 
 			if (pauseMatch) {
 				const pauseLevel = Number(pauseMatch[1]);
-
+				const pauseDuration = pauseScale[pauseLevel] * speed;
+				
 				await new Promise(resolve => 
 					setTimeout(resolve, pauseScale[pauseLevel]));
 				index += pauseMatch[0].length - 1;
@@ -59,7 +60,7 @@ export async function initializeTyping(element, text) {
 		await new Promise(resolve =>
 		    setTimeout(
 		        resolve,
-		        firstSentence ? firstSentenceSpeed : normalSpeed
+		        firstSentence ? firstSentenceSpeed*speed : normalSpeed*speed
 		    )
 		);
 
