@@ -69,9 +69,6 @@ function parseQuestions(csv){
 		questions.push(question)
 		question = {}
 	}
-
-	console.log("Questions parsed", questions)
-
 	return questions;
 }
 
@@ -81,7 +78,6 @@ export async function initializeQuestions() {
     const csv = await loadQuestions();
     questionTrack = parseQuestions(csv);
     state.initialized = true;
-
     const consent = await createQuestionIntro();
 
     if (consent === "yes") {
@@ -92,6 +88,7 @@ export async function initializeQuestions() {
 
         state.status = "declined";
     }
+
 }
 
 async function loadCurrentQuestion() {
@@ -193,36 +190,49 @@ function handleQuestionIntro(event) {
     return choice;
 }
 
-function handleQuestionSubmit(event) {
+async function handleQuestionSubmit(event) {
 
     event.preventDefault();
 
     const followup = document.querySelector("#followup");
     const form = document.querySelector("#followup-form")
     const input = followup.querySelector("input");
-    const answer = input.value.trim();
+
+    const answer = input.value.trim().toLowerCase();
+
     const question = questionTrack[state.currentQuestion];
+    
     const status = document.querySelector("#status")
 
     if (!answer) {
     	status.textContent = "Answer not provided."
         return;
     } else {
-    	initializeTyping(status, `${question.key} been provided`, 1)
+    	initializeTyping(status, `${question.key} been provided`, .8)
     }
 
-    // answers[question.key] = answer;
+    answers[question.key] = answer;
+    let submission = {
+        key: question.key,
+        answer: answer
+    };
 
-    state.currentQuestion++
+    state.currentQuestion++;
+    
+    submitFollowup(submission);
+
 
     if (questionTrack[state.currentQuestion]) {
-        form.remove()
-        loadCurrentQuestion()
+        console.log(followup.outerHTML);
+        form.remove();
+        await loadCurrentQuestion()
     } else {
+        submitFollowup(answers)
+        await new Promise(resolve => setTimeout(resolve, 700));
         status.textContent = "Thank you for your submissions."
     }
 
-    console.log("Question answer:", answer);
+    // console.log("Question answer:", answer);
 }
 
 
@@ -257,18 +267,23 @@ async function createFollowupInput(question) {
     const row = document.createElement("div");
     row.className = "followup-answer";
 
+    const inputRow = document.createElement("div");
+    inputRow.className = "followup-input-row";
+
     const prompt = document.createElement("span");
-    prompt.className = "email-prompt";
+    prompt.className = "input-prompt";
     
     const input = document.createElement("input");
     input.type = "text";
-    input.placeholder = question.key;
+    input.placeholder = question.format;
 
     const questionStatus = document.createElement("div");
     questionStatus.id = "status";
 
-    row.appendChild(prompt);
-    row.appendChild(input);
+    inputRow.appendChild(prompt);
+    inputRow.appendChild(input);
+    
+    row.appendChild(inputRow)
     row.appendChild(questionStatus);
 
     followup.appendChild(row);
@@ -277,10 +292,17 @@ async function createFollowupInput(question) {
 
     input.focus();
 
-    console.log("Input has been provided");
+    // console.log("Input has been provided");
 }
 
 
-async function submitFollowup(email, answers) {
-    // fetch(...)
+function submitFollowup(answer) {
+    console.log("Followup submitted")
+    fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(answer)
+    });
 }

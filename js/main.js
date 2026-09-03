@@ -11,7 +11,7 @@ const splashText = await response.text();
 const statusCommand = document.querySelector("#status-command");
 const statusValue = document.querySelector("#status-value");
 const splashOutput = document.querySelector("#splash-text");
-const emailPrompt = document.querySelector(".email-prompt");
+const emailPrompt = document.querySelector(".input-prompt");
 const emailInput = document.querySelector("#email-input");
 
 await initializeTyping(statusCommand, "> site_status", 1);

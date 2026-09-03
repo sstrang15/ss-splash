@@ -5,34 +5,31 @@
 html,
 body {
     margin: 0;
+    width:100%;
+    height: 100%;
     min-height: 100vh;
     background: #f5f6f4;
     color: #161918;
-    /*background: #f4f2ed;
-    color: #171717;*/
     font-family: "Courier New", Courier, monospace;
 }
 
 .splash {
+    --text-scale: clamp(14px, 0.65vw + 10px, 20px);
+
     position: relative;
     min-height: 100vh;
     padding: 32px 40px;
+
+    font-size: var(--text-scale);
 }
 
 .splash-brand,
 .splash-links,
-#splash-output {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-
+#splash-output,
 .message-type {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: clamp(2.75rem, 4vw, 5rem);
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    color: #343434;
 }
+
 /* Small site identifier — top left */
 
 .splash-brand {
@@ -40,7 +37,8 @@ body {
     top: 32px;
     left: 40px;
 
-    font-size: 1.1rem;
+    font-size: 1em;
+    color: #707070;
 }
 
 /* Links — top right */
@@ -49,8 +47,15 @@ body {
     position: absolute;
     top: 32px;
     right: 40px;
+
     display: flex;
     gap: 24px;
+
+    font-size: 1em;
+}
+
+.splash-links a {
+    color: #5f5f5f;
 }
 
 /* Status + primary message */
@@ -66,6 +71,7 @@ body {
 
 .splash-status {
     margin-bottom: 40px;
+    font-size: 1em;
 }
 
 .splash-status p {
@@ -75,6 +81,11 @@ body {
 #status-command {
     color: #5f5f5f;
 }
+
+#status-value {
+    color: #a66a32;
+}
+
 /* Main typed message */
 
 .splash-message {
@@ -83,41 +94,49 @@ body {
 
 #splash-output {
     margin: 0;
-    font-size: clamp(2.15rem, 3.5vw, 5rem);
+
+    font-size: 2.4em;
     font-weight: 400;
     letter-spacing: 0.02em;
     line-height: 1.5;
+
     color: #343434;
 }
 
-#status-value {
-    color: #a66a32;
+.message-type {
+    font-size: 2.4em;
 }
 
-.splash-links a {
-    color: #5f5f5f;
-}
-
-.splash-brand {
-    color: #707070;
-}
-
+.message-type,
 #splash-text {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: clamp(2.2rem, 4vw, 2.5rem);
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-size: 2.4em;
+    font-weight: 500;
+    letter-spacing: 0.03em;
     color: #343434;
 }
 
-.splash-email {
-    margin-top: 36px;
+/* Newsletter */
+
+.splash-email,
+#followup-form,
+#question-intro-form {
     min-height: 60px;
 
     font-family: "Courier New", Courier, monospace;
-    font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+    font-size: 1.55em;
 }
 
+.splash-email {
+    margin-top: 30px;
+}
+
+.email-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+}
+
+.input-prompt,
 .email-prompt {
     color: #555;
 }
@@ -146,36 +165,16 @@ body {
     opacity: 1;
 }
 
-.email-row {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-}
-
-.splash-email,
-#followup-form,
-#question-intro-form {
-    min-height: 60px;
-    font-family: "Courier New", Courier, monospace;
-    font-size: clamp(1.8rem, 2.5vw, 2.6rem);
-}
-
-.splash-email {
-    margin-top: 36px;
-}
-
 #newsletter-status {
     font-family: "Courier New", Courier, monospace;
     color: #5f5f5f;
-    display: flex;
 }
+
 #newsletter-status.success {
     color: green;
 }
 
-#question-intro-form {
-
-}
+/* Question intro */
 
 #question-intro {
     margin-top: 32px;
@@ -205,40 +204,54 @@ body {
     cursor: pointer;
 }
 
-#followup-form input {
+/* Follow-up questions */
 
-    font: inherit;
+#followup-form {
+    margin-top: 32px;
+}
+
+.followup-question {
+    margin-bottom: 12px;
+    color: #343434;
+}
+
+.followup-answer {
+    display: block;
+}
+
+.followup-input-row {
+    display: inline-flex;
+    align-items: baseline;
+}
+
+.followup-input-row input {
+    margin-left: 14px;
 }
 
 #followup input {
     width: 14ch;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-
-    font: inherit;
-    color: #343434;
-    caret-color: #343434;
 }
 
-.followup-question {
+#status {
+    margin-top: 8px;
 
+    font-family: "Courier New", Courier, monospace;
+    color: #5f5f5f;
+    opacity: 0.75;
 }
 
-.followup-answer {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 14px;
-}
+/* Cursor */
 
-.typing-cursor {
+.typing-cursor::after {
+    content: "";
     display: inline-block;
-    width: 0.40em;
-    height: 0.9em;
+
+    width: 0.16em;
+    height: .95em;
     margin-left: 0.08em;
+
     background: #161918;
-    vertical-align: -0.08em;
+    vertical-align: -0.05em;
 
     animation: cursor-blink 0.8s step-end infinite;
 }
@@ -254,3 +267,4 @@ body {
         opacity: 0;
     }
 }
+

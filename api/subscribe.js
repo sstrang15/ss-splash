@@ -18,7 +18,8 @@ export default async function subscribe(request, response) {
     );
 
     // const email = getEmail(request);
-    const { email } = request.body;
+    const payload = request.body;
+    console.log("Received POST request", payload)
 
     // sendWelcomeEmail(email)
 

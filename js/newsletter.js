@@ -59,7 +59,7 @@ export async function initializeNewsletter() {
         try {
 
             response = await submitEmail(email);
-            console.log(response.ok)
+            // console.log(response.ok)
 
             if (response.ok) {
 
