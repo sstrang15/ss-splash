@@ -207,32 +207,30 @@ async function handleQuestionSubmit(event) {
     if (!answer) {
     	status.textContent = "Answer not provided."
         return;
-    } else {
-    	initializeTyping(status, `${question.key} been provided`, .8)
     }
 
+    input.remove();
+
     answers[question.key] = answer;
-    let submission = {
+
+    const submission = {
         key: question.key,
         answer: answer
     };
 
-    state.currentQuestion++;
-    
     submitFollowup(submission);
 
+    state.currentQuestion++;
 
     if (questionTrack[state.currentQuestion]) {
-        console.log(followup.outerHTML);
         form.remove();
         await loadCurrentQuestion()
     } else {
         submitFollowup(answers)
+        status.classList.add("success");
         await new Promise(resolve => setTimeout(resolve, 700));
         status.textContent = "Thank you for your submissions."
     }
-
-    // console.log("Question answer:", answer);
 }
 
 
@@ -276,6 +274,7 @@ async function createFollowupInput(question) {
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = question.format;
+    input.style.visibility = "hidden";
 
     const questionStatus = document.createElement("div");
     questionStatus.id = "status";
@@ -288,8 +287,9 @@ async function createFollowupInput(question) {
 
     followup.appendChild(row);
 
-    await initializeTyping(prompt, "> Enter", 2)
+    await initializeTyping(prompt, "> ", 2)
 
+    input.style.visibility = "visible";
     input.focus();
 
     // console.log("Input has been provided");

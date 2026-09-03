@@ -1,6 +1,6 @@
 key,prompt,format,submittedText
-name,What is your first name,"Will, Eve",first name submitted.
-birth,Your birth month?,"Jan, July, Oct",birth month submitted.
-college,What college do you root for?,school name,favorite college submitted.
-color,Your favorite color?,color name,favorite color submitted.
-state,What state did you grow up in?,state name or abbreviation,state submitted.
+name,What is your first name,"Will, Eve",First name submitted.
+birth,Your birth month?,"Jan, July, Oct",Birth month submitted.
+college,What college do you root for?,School name,Favorite college submitted.
+color,Your favorite color?,Color name,Favorite color submitted.
+state,What state did you grow up in?,State abbreviation,State submitted.

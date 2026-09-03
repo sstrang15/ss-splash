@@ -63,7 +63,7 @@ body {
 .splash-content {
     width: min(1100px, 82vw);
     margin: 0 auto;
-    padding-top: 100px;
+    padding-top: 16vh;
 }
 
 /* > site_status
@@ -229,7 +229,7 @@ body {
 }
 
 #followup input {
-    width: 14ch;
+    width: 34ch;
 }
 
 #status {
@@ -238,6 +238,11 @@ body {
     font-family: "Courier New", Courier, monospace;
     color: #5f5f5f;
     opacity: 0.75;
+}
+
+#status.success {
+    color: green;
+    opacity: 1;
 }
 
 /* Cursor */
