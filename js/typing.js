@@ -1,3 +1,5 @@
+import { playSound, restartSound, stopSound } from "./sound.js";
+
 const pauseScale = {
     1: 75,
     2: 100,
@@ -33,6 +35,8 @@ export async function initializeTyping(element, text, speed) {
 	let firstSentence = true;
 	element.textContent = "";
 
+	playSound();
+
 	for (let index=0; index < text.length; index++) {
 		if (text[index] === "{") {
 			const remainingText = text.slice(index);
@@ -43,7 +47,10 @@ export async function initializeTyping(element, text, speed) {
 				const pauseDuration = pauseScale[pauseLevel] * speed;
 				
 				await new Promise(resolve => 
-					setTimeout(resolve, pauseScale[pauseLevel]));
+					setTimeout(resolve, pauseScale[pauseDuration]));
+
+				restartSound();
+
 				index += pauseMatch[0].length - 1;
 				continue;
 			}
@@ -93,6 +100,7 @@ export async function initializeTyping(element, text, speed) {
 		}
 
 	}
+	stopSound();
 	console.log({
 	    element,
 	    text

@@ -71,7 +71,7 @@ export async function initializeNewsletter() {
                 form.reset()
                 form.remove();
 
-                initializeQuestions();
+                initializeQuestions(email);
     
                 return;
 
@@ -105,12 +105,17 @@ async function submitEmail(email) {
 
     console.log("email being submitted:", email);
 
+    const submission = {
+        type: "email",
+        email: email
+    };
+
     const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify(submission)
     });
 
     const data = await response.json();

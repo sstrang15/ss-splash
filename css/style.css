@@ -2,15 +2,36 @@
     box-sizing: border-box;
 }
 
+#enter-screen {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f5f6f4;
+    color: #5f5f5f;
+
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1em;
+
+    cursor: pointer;
+    z-index: 9999;
+}
+
 html,
 body {
     margin: 0;
-    width:100%;
-    height: 100%;
+    width: 100%;
     min-height: 100vh;
+
     background: #f5f6f4;
     color: #161918;
+
     font-family: "Courier New", Courier, monospace;
+
+    overflow-x: hidden;
 }
 
 .splash {
@@ -103,15 +124,12 @@ body {
     color: #343434;
 }
 
-.message-type {
-    font-size: 2.4em;
-}
-
 .message-type,
 #splash-text {
     font-size: 2.4em;
     font-weight: 500;
     letter-spacing: 0.03em;
+
     color: #343434;
 }
 
@@ -152,6 +170,7 @@ body {
     padding: 0;
     border: 0;
     outline: 0;
+
     background: transparent;
 
     font: inherit;
@@ -237,12 +256,19 @@ body {
 
     font-family: "Courier New", Courier, monospace;
     color: #5f5f5f;
+
     opacity: 0.75;
 }
 
 #status.success {
     color: green;
     opacity: 1;
+}
+
+/* Final follow-up state */
+
+#followup-form > .success {
+    color: green;
 }
 
 /* Cursor */
@@ -252,7 +278,7 @@ body {
     display: inline-block;
 
     width: 0.16em;
-    height: .95em;
+    height: 0.95em;
     margin-left: 0.08em;
 
     background: #161918;
@@ -272,4 +298,3 @@ body {
         opacity: 0;
     }
 }
-

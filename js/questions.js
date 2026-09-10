@@ -11,6 +11,8 @@ const answers = {};
 
 let questionTrack = [];
 
+let subscriberEmail = "";
+
 async function loadQuestions() {
 	const response = await fetch("/assets/data/questions.csv");
 	const csv = await response.text();
@@ -72,8 +74,9 @@ function parseQuestions(csv){
 	return questions;
 }
 
-export async function initializeQuestions() {
+export async function initializeQuestions(email) {
 
+    subscriberEmail = email;
     console.log("questions initialized");
     const csv = await loadQuestions();
     questionTrack = parseQuestions(csv);
@@ -226,10 +229,15 @@ async function handleQuestionSubmit(event) {
         form.remove();
         await loadCurrentQuestion()
     } else {
-        submitFollowup(answers)
-        status.classList.add("success");
         await new Promise(resolve => setTimeout(resolve, 700));
-        status.textContent = "Thank you for your submissions."
+
+        form.replaceChildren();
+
+        const finalStatus = document.createElement("div");
+        finalStatus.className = "success";
+        finalStatus.textContent = "Thank you for your submissions.";
+
+        form.appendChild(finalStatus);
     }
 }
 
@@ -297,12 +305,21 @@ async function createFollowupInput(question) {
 
 
 function submitFollowup(answer) {
-    console.log("Followup submitted")
+
+    console.log("Followup submitted");
+
+    const submission = {
+        type: "followup",
+        email: subscriberEmail,
+        key: answer.key,
+        answer: answer.answer
+    };
+
     fetch("/api/subscribe", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(answer)
+        body: JSON.stringify(submission)
     });
 }

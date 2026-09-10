@@ -1,8 +1,7 @@
 import { initializeTyping } from "./typing.js";
-import { initializeSound } from "./sound.js";
 import { initializeNewsletter } from "./newsletter.js";
 import { initializeQuestions } from "./questions.js";
-
+import { playSound, loadSound, restartSound } from "./sound.js";
 
 
 const response = await fetch("/assets/text/splash.txt");
@@ -14,12 +13,23 @@ const splashOutput = document.querySelector("#splash-text");
 const emailPrompt = document.querySelector(".input-prompt");
 const emailInput = document.querySelector("#email-input");
 
-await initializeTyping(statusCommand, "> site_status", 1);
-await initializeTyping(statusValue, "under construction", 1);
-await initializeTyping(splashOutput, splashText, 1);
-await initializeTyping(emailPrompt, "> Enter", .7);
+const enterScreen = document.querySelector("#enter-screen");
 
-emailInput.style.visibility = "visible";
+enterScreen.addEventListener("click", async () => {
 
-initializeNewsletter();
+    
+    await loadSound();
 
+    playSound();
+
+    enterScreen.remove();
+
+    statusCommand.textContent = "> site_status";
+    statusValue.textContent = "under construction";
+    await initializeTyping(splashOutput, splashText, 1.2);
+    await initializeTyping(emailPrompt, "> Enter", 1,2);
+
+    emailInput.style.visibility = "visible";
+
+    initializeNewsletter();
+}, { once: true });

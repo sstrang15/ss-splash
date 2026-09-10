@@ -1,53 +1,132 @@
 // subscribe.js
 
-import { Resend } from 'resend';
+import { Resend } from "resend";
+import { getWelcomeTemplate } from "../emails/welcome.js";
 
+let subscribers = {};
 
-// const resend = new Resend(
-//     process.env.strangnewsletter_RESEND_API_KEY
-// );
+const resend = new Resend(
+    process.env.strangnewsletter_RESEND_API_KEY
+);
 
-// console.log({
-//     hasResendKey: !!process.env.strangnewsletter_RESEND_API_KEY
-// });
 
 export default async function subscribe(request, response) {
 
-    const resend = new Resend(
-        process.env.strangnewsletter_RESEND_API_KEY
-    );
+    const { type } = request.body;
 
-    // const email = getEmail(request);
-    const payload = request.body;
-    console.log("Received POST request", payload)
+    if (type === "email") {
 
-    // sendWelcomeEmail(email)
+        const email = getEmail(request);
 
-    // if (request.method !== "POST") {
-    //     return response.status(405).json({ ok: false});
-    // }
+        if (!email) {
+            return response.status(400).json({
+                ok: false
+            });
+        }
 
-    return response.status(200).json({
-        ok: true
+        createSubscriber(email);
+        console.log("AFTER CREATE:", subscribers);
+
+        return response.status(200).json({
+            ok: true
+        });
+    }
+
+    if (type === "followup") {
+
+
+        const email = getEmail(request);
+        const followup = getFollowup(request);
+        console.log("AT FOLLOWUP:", subscribers);
+        // console.log(followup)
+        // console.log("email:", email);
+        // console.log("followup:", followup);
+        // console.log("subscriber:", subscribers[email]);
+
+        if (!email || !followup || !subscribers[email]) {
+            console.log("Something is off")
+            return response.status(400).json({
+                ok: false
+            });
+        }
+
+        addFollowup(email, followup);
+        return response.status(200).json({
+            ok: true
+        });
+    }
+
+    return response.status(400).json({
+        ok: false
     });
 }
 
-// function getEmail(request) {
-//     const { email } = request.body;
 
-//     if (!email) {
-//         return response.status(400).json({
-//             ok: false
-//         });
+function getEmail(request) {
 
-//     const cleanEmail = email.trim();
-// }
+    const { email } = request.body;
 
-async function sendWelcomeEmail(email) {
-    return await resend.emails.send({
+    if (!email) {
+        return null;
+    }
+
+    return email.trim();
+}
+
+
+function getFollowup(request) {
+
+    const { key, answer } = request.body;
+
+    if (!key || !answer) {
+        return null;
+    }
+
+    return {
+        key,
+        answer
+    };
+}
+
+
+function createSubscriber(email) {
+
+    subscribers[email] = {
+        email: email,
+        answers: {}
+    };
+
+    // console.log(
+    //     "Subscriber created:",
+    //     subscribers[email]
+    // );
+}
+
+
+function addFollowup(email, followup) {
+    console.log({
+        email,
+        followup
+    });
+    const key = followup.key;
+    const answer = followup.answer;
+
+    subscribers[email].answers[key] = answer;
+
+    console.log(
+        "Subscriber updated:", subscribers[email]
+    );
+}
+
+
+async function sendWelcomeEmail(email, body) {
+
+    const emailMessage = {
         from: "hello@stephenstrang.dev",
         to: email,
-        subject: "Welcome",
-        text: "Thanks for signing up."
-    });
+        subject: "A quick welcome from Stephen.",
+        html: body
+    };
+
+    return await resend.emails.send(emailMessage);
 }

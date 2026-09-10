@@ -1,1 +1,85 @@
 <!-- welcome.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Welcome</title>
+</head>
+
+<body>
+
+    <main class="welcome">
+
+        <header class="welcome-header">
+            <div class="brand">
+                stephenstrang.dev
+            </div>
+
+            <h1>
+                Welcome to Stephen's corner of the internet.
+            </h1>
+        </header>
+
+        <section class="welcome-body">
+
+            <div class="welcome-section" id="name">
+                <p>
+                    Hi {{name}}. Thanks for signing up and taking a minute
+                    to tell me a little about yourself.
+                </p>
+            </div>
+
+            <div class="welcome-section" id="birth">
+                <p>
+                    A {{birth}} birthday. I'll keep that one in mind.
+                </p>
+            </div>
+
+            <div class="welcome-section" id="color">
+                <p>
+                    You chose {{color}} as your favorite color.
+                </p>
+            </div>
+
+            <div class="welcome-section" id="state">
+                <p>
+                    You grew up in {{state}}, which tells me a little more
+                    about where you're coming from.
+                </p>
+            </div>
+
+            <div class="welcome-section" id="college">
+                <p>
+                    And when it comes to college, you're pulling for
+                    {{college}}.
+                </p>
+            </div>
+
+            <div class="welcome-section" id="other">
+                <p>
+                    {{other}}
+                </p>
+            </div>
+
+        </section>
+
+        <footer class="welcome-footer">
+            <p>
+                That's enough interrogation for now. Welcome aboard.
+            </p>
+
+            <p>
+                See you around,<br>
+                Stephen
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
