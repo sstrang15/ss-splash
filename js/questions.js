@@ -1,6 +1,7 @@
 import { initializeTyping } from "./typing.js";
 
 
+
 const state = {
     initialized: false,
     status: "ready",

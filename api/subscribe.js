@@ -2,8 +2,7 @@
 
 import { Resend } from "resend";
 import { getWelcomeTemplate } from "../emails/welcome.js";
-
-let subscribers = {};
+import { insertSubscriber, insertSubscriberInfo} from "../db/database.js";
 
 const resend = new Resend(
     process.env.strangnewsletter_RESEND_API_KEY
@@ -24,8 +23,7 @@ export default async function subscribe(request, response) {
             });
         }
 
-        createSubscriber(email);
-        console.log("AFTER CREATE:", subscribers);
+        await insertSubscriber(email);
 
         return response.status(200).json({
             ok: true
@@ -36,19 +34,18 @@ export default async function subscribe(request, response) {
 
 
         const email = getEmail(request);
-        const followup = getFollowup(request);
-        console.log("AT FOLLOWUP:", subscribers);
-        // console.log(followup)
-        // console.log("email:", email);
-        // console.log("followup:", followup);
-        // console.log("subscriber:", subscribers[email]);
 
-        if (!email || !followup || !subscribers[email]) {
-            console.log("Something is off")
+        const followup = getFollowup(request);
+
+        if (!email || !followup) {
+            console.log("Something is off");
+
             return response.status(400).json({
                 ok: false
             });
         }
+
+        await insertSubscriberInfo(email, followup);
 
         addFollowup(email, followup);
         return response.status(200).json({
@@ -76,7 +73,7 @@ function getEmail(request) {
 
 function getFollowup(request) {
 
-    const { key, answer } = request.body;
+    const { email, key, answer } = request.body;
 
     if (!key || !answer) {
         return null;
@@ -87,37 +84,6 @@ function getFollowup(request) {
         answer
     };
 }
-
-
-function createSubscriber(email) {
-
-    subscribers[email] = {
-        email: email,
-        answers: {}
-    };
-
-    // console.log(
-    //     "Subscriber created:",
-    //     subscribers[email]
-    // );
-}
-
-
-function addFollowup(email, followup) {
-    console.log({
-        email,
-        followup
-    });
-    const key = followup.key;
-    const answer = followup.answer;
-
-    subscribers[email].answers[key] = answer;
-
-    console.log(
-        "Subscriber updated:", subscribers[email]
-    );
-}
-
 
 async function sendWelcomeEmail(email, body) {
 
