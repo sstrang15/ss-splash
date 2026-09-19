@@ -67,6 +67,7 @@ async function createSubscriberTable(database) {
 	await database.query(createTableQuery);
 }
 
+
 export async function insertSubscriber(email) {
 
 	const database = createDatabaseClient();
@@ -112,14 +113,3 @@ export async function insertSubscriberInfo(email, followup) {
 
     await database.end();
 }
-
-
-await insertSubscriber("test@example.com");
-
-await insertSubscriberInfo(
-    "test@example.com",
-    {
-        key: "color",
-        answer: "blue"
-    }
-);

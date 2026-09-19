@@ -3,6 +3,7 @@
 import { Resend } from "resend";
 import { getWelcomeTemplate } from "../emails/welcome.js";
 import { insertSubscriber, insertSubscriberInfo} from "../db/database.js";
+import { welcomeTimer } from "../scheduler/scheduler.js"
 
 const resend = new Resend(
     process.env.strangnewsletter_RESEND_API_KEY
@@ -13,49 +14,50 @@ export default async function subscribe(request, response) {
 
     const { type } = request.body;
 
-    if (type === "email") {
+        if (type === "email") {
 
-        const email = getEmail(request);
+            const email = getEmail(request);
 
-        if (!email) {
-            return response.status(400).json({
-                ok: false
+            if (!email) {
+                return response.status(400).json({
+                    ok: false
+                });
+            }
+
+            await insertSubscriber(email);
+
+            welcomeTimer(email)
+
+
+            return response.status(200).json({
+                ok: true
             });
         }
 
-        await insertSubscriber(email);
+        if (type === "followup") {
 
-        return response.status(200).json({
-            ok: true
-        });
-    }
+            const email = getEmail(request);
 
-    if (type === "followup") {
+            const followup = getFollowup(request);
 
+            if (!email || !followup) {
+                console.log("Something is off");
+                return response.status(400).json({
+                    ok: false
+                });
+            }
 
-        const email = getEmail(request);
+            await insertSubscriberInfo(email, followup);
 
-        const followup = getFollowup(request);
-
-        if (!email || !followup) {
-            console.log("Something is off");
-
-            return response.status(400).json({
-                ok: false
+            addFollowup(email, followup);
+            return response.status(200).json({
+                ok: true
             });
         }
 
-        await insertSubscriberInfo(email, followup);
-
-        addFollowup(email, followup);
-        return response.status(200).json({
-            ok: true
+        return response.status(400).json({
+            ok: false
         });
-    }
-
-    return response.status(400).json({
-        ok: false
-    });
 }
 
 
@@ -85,7 +87,7 @@ function getFollowup(request) {
     };
 }
 
-async function sendWelcomeEmail(email, body) {
+export async function sendWelcomeEmail(email, body) {
 
     const emailMessage = {
         from: "hello@stephenstrang.dev",
