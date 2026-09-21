@@ -9,3 +9,18 @@ export async function getWelcomeTemplate() {
 
     return template;
 }
+
+export function buildWelcomeEmail(template, subscriber) {
+
+    let body = template;
+
+    for (const [key, value] of Object.entries(subscriber)) {
+
+        body = body.replaceAll(
+            `{{${key}}}`,
+            value ?? ""
+        );
+    }
+
+    return body;
+}

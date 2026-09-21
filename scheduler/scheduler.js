@@ -1,63 +1,38 @@
 
-import { getWelcomeTemplate } from "../emails/welcome.js"
+import { getWelcomeTemplate, buildWelcomeEmail } from "../emails/welcome.js"
 import { sendWelcomeEmail } from "../api/subscribe.js"
+import { getDueWelcomeSubscribers, markWelcomeSent } from "../db/database.js";
 
 const welcomeDelay = .35 * 60 * 1000;
 const checkInterval = 5 * 1000;
-let masterTimer = []
 
-console.log("scheduler.js loaded");
+export async function processWelcomeEmails() {
 
-export async function welcomeTimer(email) {
+    console.log("Scheduler checking for welcome emails...");
 
-	let timer = Date.now()
+    const cutoff = new Date(Date.now() - welcomeDelay);
 
-	masterTimer.push({
-		"email": email,
-		"start": timer
-	})
-}
+    const subscribers = await getDueWelcomeSubscribers(cutoff);
 
-async function processWelcomeTimers(masterTimer) {
+    console.log("Scheduler received due subscribers:", subscribers.length);
 
-	for (const timer of masterTimer) {
+    for (const subscriber of subscribers) {
 
-	    if (Date.now() - timer.start >= welcomeDelay) {
+        console.log("Sending welcome:", subscriber.email);
 
-	    	console.log(`${timer.email} welcome timer completed!`);
+        const template = await getWelcomeTemplate();
+        const body = buildWelcomeEmail(
+            template,
+            subscriber
+        );
 
-	        const body = await getWelcomeTemplate();
-		    await sendWelcomeEmail(timer.email, body);
-	    
-	        const position = masterTimer.indexOf(timer);
+        await sendWelcomeEmail(
+            subscriber.email,
+            body
+        );
+        
+		await markWelcomeSent(subscriber.email);
 
-	        masterTimer.splice(position, 1);
-	    }
-	}
-}
-
-
-async function monitorWelcomeTimers() {
-
-    while (masterTimer.length > 0) {
-
-    	console.log("scheduler running");
-
-        await processWelcomeTimers(masterTimer);
-        await pause();
+        console.log("Welcome completed:", subscriber.email);
     }
-
 }
-
-
-function pause() {
-
-    return new Promise(resolve => {
-        setTimeout(resolve, checkInterval);
-    });
-}
-
-welcomeTimer("test@example.com");
-
-monitorWelcomeTimers();
-

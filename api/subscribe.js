@@ -3,7 +3,7 @@
 import { Resend } from "resend";
 import { getWelcomeTemplate } from "../emails/welcome.js";
 import { insertSubscriber, insertSubscriberInfo} from "../db/database.js";
-import { welcomeTimer } from "../scheduler/scheduler.js"
+import { processWelcomeEmails } from "../scheduler/scheduler.js"
 
 const resend = new Resend(
     process.env.strangnewsletter_RESEND_API_KEY
@@ -26,8 +26,7 @@ export default async function subscribe(request, response) {
 
             await insertSubscriber(email);
 
-            welcomeTimer(email)
-
+            await processWelcomeEmails();
 
             return response.status(200).json({
                 ok: true
@@ -47,9 +46,10 @@ export default async function subscribe(request, response) {
                 });
             }
 
+            // inspectMasterTimer();
+
             await insertSubscriberInfo(email, followup);
 
-            addFollowup(email, followup);
             return response.status(200).json({
                 ok: true
             });

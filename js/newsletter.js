@@ -59,7 +59,8 @@ export async function initializeNewsletter() {
         try {
 
             response = await submitEmail(email);
-            // console.log(response.ok)
+            console.log("email submitted")
+            console.log(response.ok)
 
             if (response.ok) {
 
@@ -83,7 +84,7 @@ export async function initializeNewsletter() {
         } catch (error) {
 
             state.status = "error";
-            console.error(error);
+            // console.error(error);
             console.log(response);
             newsletterStatus.textContent = "Something went wrong. Please try again.";
         }
@@ -118,7 +119,11 @@ async function submitEmail(email) {
         body: JSON.stringify(submission)
     });
 
+    console.log("request sent to subscribe")
+
     const data = await response.json();
+
+    console.log("Request received")
 
     return data;
 }
