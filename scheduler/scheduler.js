@@ -21,7 +21,7 @@ export async function processWelcomeEmails() {
 
         const template = await getWelcomeTemplate();
 
-        const body = buildWelcomeEmail(
+        const body = await buildWelcomeEmail(
             template,
             subscriber
         );
