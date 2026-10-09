@@ -3,8 +3,7 @@ import { getWelcomeTemplate, buildWelcomeEmail } from "../emails/welcome.js"
 import { sendWelcomeEmail } from "../api/subscribe.js"
 import { getDueWelcomeSubscribers, markWelcomeSent } from "../db/database.js";
 
-const welcomeDelay = .35 * 60 * 1000;
-const checkInterval = 5 * 1000;
+const welcomeDelay = .35 * 24 * 60 * 60 * 1000;
 
 export async function processWelcomeEmails() {
 
@@ -21,17 +20,23 @@ export async function processWelcomeEmails() {
         console.log("Sending welcome:", subscriber.email);
 
         const template = await getWelcomeTemplate();
+
         const body = buildWelcomeEmail(
             template,
             subscriber
         );
 
-        await sendWelcomeEmail(
+        const result = await sendWelcomeEmail(
             subscriber.email,
             body
         );
-        
-		await markWelcomeSent(subscriber.email);
+
+        if (result.error) {
+            console.error("Welcome email failed:", result.error);
+            continue;
+        }
+
+        await markWelcomeSent(subscriber.email);
 
         console.log("Welcome completed:", subscriber.email);
     }
