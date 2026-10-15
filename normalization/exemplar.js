@@ -18,15 +18,10 @@ export function exemplarComparison(answer, exemplar) {
             score += 1;
             available.splice(index, 1);
         }
-
-        // Matching positions
-        if (char === target[i]) {
-            score += 2;
-        }
     }
 
     // Longest common subsequence
-    score += 2 * longestCommonSubsequence(input, target);
+    score += 4 * longestCommonSubsequence(input, target);
 
     return score / (5 * Math.max(input.length, target.length));
 }

@@ -14,7 +14,12 @@ const tests = [
     ["color", "blu"],
     ["color", "navy"],
     ["color", "grey"],
-    ["color", "samon blue"]
+    ["color", "samon blue"],
+    ["car", "camry"],
+    ["car", "bmw 328i"],
+    ["car", "ford f150"],
+    ["car", "911 carrera"],
+    ["car", "98 mustang gt"]
 ];
 
 for (const [key, answer] of tests) {

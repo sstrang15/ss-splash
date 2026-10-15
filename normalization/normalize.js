@@ -19,11 +19,20 @@ export async function normalizeAnswer(key, answer) {
             ]);
 
         case "birth": {
-            const exemplars = [
-                "January", "February", "March", "April",
-                "May", "June", "July", "August",
-                "September", "October", "November", "December"
-            ];
+        	const exemplars = [
+        	    "January", "Jan", "Janu",
+        	    "February", "Feb", "Febr",
+        	    "March", "Mar", "Marc",
+        	    "April", "Apr", "Apri",
+        	    "May",
+        	    "June", "Jun",
+        	    "July", "Jul",
+        	    "August", "Aug", "Augu",
+        	    "September", "Sep", "Sept",
+        	    "October", "Oct", "Octo",
+        	    "November", "Nov", "Nove",
+        	    "December", "Dec", "Dece"
+        	];
 
             return await normalizeWithExemplars(
                 answer,
@@ -44,11 +53,17 @@ export async function normalizeAnswer(key, answer) {
         return await normalizeWithExemplars(
             answer,
             exemplars,
-            [
-                "Identify the car manufacturer the user intended.",
-                "Recognize common abbreviations and misspellings."
-            ],
-            true
+        	[
+        	    "Identify the vehicle the user owned.",
+        	    "Return the manufacturer and model when identifiable.",
+        	    "Preserve trim levels and model years when provided.",
+        	    "Expand recognizable manufacturer abbreviations.",
+        	    "Correct spelling and capitalization.",
+        	    "Do not invent missing vehicle details.",
+        	    "Return only the normalized vehicle name.",
+        	    "If the vehicle cannot be identified, return UNKNOWN."
+        	],
+            false
         );
     }
 
@@ -63,9 +78,12 @@ export async function normalizeAnswer(key, answer) {
             answer,
             exemplars,
             [
-                "Identify the color the user intended.",
-                "Recognize common synonyms and shades.",
-                "Choose the closest matching color from the exemplars."
+                "Identify and standardize the color the user intended.",
+                "Preserve specific shades such as Navy, Burgundy, and Forest Green.",
+                "When multiple colors are mentioned, prioritize the first color.",
+                "Return only the normalized name of that color.",
+                "Correct spelling and capitalization.",
+                "Never explain your reasoning."
             ],
             false
         );
@@ -109,7 +127,6 @@ async function normalizeWithExemplars(
     const minimumMargin = 0.15;
 
   	if (
-      color &&
       bestMatch.score >= minimumScore &&
         (!secondMatch || bestMatch.score - secondMatch.score >= minimumMargin)
     ) {
@@ -128,18 +145,16 @@ async function normalizeWithExemplars(
             "If the answer cannot be determined, return UNKNOWN."
         ]
         : [
-            ...instructions,
-            "The following are examples of valid values, not categories:",
-            exemplars.join(", "),
-            "Preserve the specificity of the user's answer.",
-            "Do not replace a specific shade with a broader color.",
-            "For example: Navy must remain Navy, not Blue.",
-            "Burgundy must remain Burgundy, not Red.",
-            "Correct spelling and capitalization only when necessary.",
-            "When multiple colors are mentioned, prioritize the first color.",
-            "Return only the normalized name of that color, without explanation.",
-            "Return UNKNOWN only if the input is not recognizable."
-        ]
+		    ...instructions,
+		    "These exemplars are references, not an exhaustive list:",
+		    exemplars.join(", "),
+		    "Preserve the specificity of the user's answer.",
+		    "Do not reduce a specific answer to a broader category.",
+		    "Return only the normalized answer.",
+		    "Never explain your reasoning.",
+		    "Never ask questions.",
+		    "If the answer cannot be identified, return UNKNOWN."
+		]
     );
 
     if (!color) {
