@@ -4,3 +4,5 @@ birth,Your birth month?,"Jan, July, Oct",Birth month submitted.
 college,What college do you root for?,School name,Favorite college submitted.
 color,Your favorite color?,Color name,Favorite color submitted.
 state,What state did you grow up in?,State abbreviation,State submitted.
+car,What was the first car you ever owned?,"Car model, brand, etc",Car submitted.
+carname,Did you give it a name, if so what was it?, Nickname, Car name submitted.

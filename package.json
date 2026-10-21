@@ -20,11 +20,15 @@
   },
   "homepage": "https://github.com/sstrang15/ss-splash#readme",
   "devDependencies": {
+    "vercel": "^64.2.0",
     "vite": "^8.2.2"
   },
   "dependencies": {
+    "openai": "^7.34.0",
     "pg": "^8.23.0",
-    "resend": "^6.25.0",
-    "vercel": "^59.20.0"
+    "resend": "^6.25.0"
+  },
+  "overrides": {
+    "undici": "^7.30.0"
   }
 }

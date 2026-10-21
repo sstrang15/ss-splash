@@ -1,9 +1,9 @@
 // subscribe.js
 
 import { Resend } from "resend";
-import { getWelcomeTemplate } from "../emails/welcome.js";
 import { insertSubscriber, insertSubscriberInfo} from "../db/database.js";
 import { processWelcomeEmails } from "../scheduler/scheduler.js"
+import { normalizeAnswer } from "../normalization/normalize.js"
 
 const resend = new Resend(
     process.env.strangnewsletter_RESEND_API_KEY
@@ -46,9 +46,15 @@ export default async function subscribe(request, response) {
                 });
             }
 
-            // inspectMasterTimer();
+            const normalizedAnswer = await normalizeAnswer(
+              followup.key,
+              followup.answer
+            );
 
-            await insertSubscriberInfo(email, followup);
+            await insertSubscriberInfo(email, {
+              key: followup.key,
+              answer: normalizedAnswer
+            });
 
             return response.status(200).json({
                 ok: true
