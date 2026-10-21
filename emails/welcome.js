@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { generateColorway } from "./colors.js";
+import { resolveColor, generateColorway } from "./colors.js";
 
 export async function getWelcomeTemplate() {
 
@@ -13,10 +13,22 @@ export async function getWelcomeTemplate() {
 
 export async function buildWelcomeEmail(template, subscriber) {
 
-    const colorway = await generateColorway(
-        subscriber.color ?? "white"
-    );
+    const color = subscriber.color ?? "White";
 
+    let hex;
+
+    if (color.trim().toLowerCase() === "white") {
+        hex = "#FFFFFF";
+    } else if (color.trim().toLowerCase() === "black") {
+        hex = "#000000";
+    } else if (["gray", "grey"].includes(color.trim().toLowerCase())) {
+        hex = "#808080";
+    } else {
+        hex = await resolveColor(color);
+    }
+
+    const colorway = await generateColorway(hex ?? "#FFFFFF");
+    
     const stylesheet = await readFile(
         new URL("./templates/welcome.css", import.meta.url),
         "utf8"

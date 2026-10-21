@@ -9,35 +9,35 @@ const testSubscribers = [
         name: "Stephen",
         birth: "July",
         college: "Georgia Tech",
-        color: "black",
+        color: "Black",
         state: "Georgia"
     },
     {
         name: "Stephen",
         birth: "July",
         college: "Georgia Tech",
-        color: "white",
+        color: "White",
         state: "Georgia"
     },
     {
         name: "Stephen",
         birth: "July",
         college: "Georgia Tech",
-        color: "gray",
+        color: "Gray",
         state: "Georgia"
     },
     {
         name: "Stephen",
         birth: "July",
         college: "Georgia Tech",
-        color: "#228B22",
+        color: "Forest Green",
         state: "Georgia"
     },
     {
         name: "Stephen",
         birth: "July",
         college: "Georgia Tech",
-        color: "#191970",
+        color: "Midnight Blue",
         state: "Georgia"
     }
 ];

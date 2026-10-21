@@ -1,4 +1,5 @@
 // colors.js
+import { askOpenAI } from "../normalization/openai.js";
 
 const defaultColorway = {
     primary: "#228B22",
@@ -33,6 +34,24 @@ const grayColorway = {
     border: "#E1E1E1"
 };
 
+export async function resolveColor(color) {
+
+    if (!color) return null;
+
+    const result = await askOpenAI(color, [
+        "Convert this color name into a representative hexadecimal RGB value.",
+        "Preserve specific shades such as Navy, Burgundy, and Forest Green.",
+        "Return exactly one six-digit hexadecimal color beginning with #.",
+        "Do not include explanations or additional text.",
+        "If the input is not a recognizable color, return UNKNOWN."
+    ]);
+
+    const hex = result?.trim();
+    
+    return hex && /^#[0-9a-fA-F]{6}$/.test(hex)
+        ? hex.toUpperCase()
+        : null;
+}
 
 export async function generateColorway(color) {
 

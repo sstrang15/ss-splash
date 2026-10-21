@@ -1,78 +1,109 @@
-<!-- welcome.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Welcome</title>
 </head>
 
 <body>
 
-    <main class="welcome">
+    <div class="email-canvas">
 
-        <header class="welcome-header">
-            <div class="brand">
-                stephenstrang.dev
-            </div>
+        <main class="welcome">
 
-            <h1>
-                Welcome to Stephen's corner of the internet.
-            </h1>
-        </header>
+            <header class="welcome-header">
 
-        <section class="welcome-body">
+                <div class="brand">
+                    stephenstrang.dev
+                </div>
 
-            <div class="welcome-section" id="name">
-                <p>
-                    Hi {{name}}. Thanks for signing up and taking a minute
-                    to tell me a little about yourself.
+                <h1>
+                    Welcome to Stephen's<br>
+                    corner of the internet.
+                </h1>
+
+                <p class="header-subtitle">
+                    Glad you found your way here.
                 </p>
-            </div>
 
-            <div class="welcome-section" id="birth">
+            </header>
+
+            <section class="welcome-body">
+
+                <div class="welcome-section" id="name">
+                    <p>
+                        Hey {{name}},
+                    </p>
+
+                    <p>
+                        Thanks for signing up. I appreciate you taking
+                        a minute to introduce yourself.
+                    </p>
+
+                    <p>
+                        Figured I'd return the favor with a proper welcome.
+                    </p>
+                </div>
+
+                <div class="welcome-section" id="birth">
+                    <p>
+                        First things first, I'll remember that
+                        {{birth}} birthday.
+                    </p>
+                </div>
+
+                <div class="welcome-section color-feature" id="color">
+                    <span class="section-label">A LITTLE PERSONALIZATION</span>
+
+                    <p>
+                        You mentioned {{color}} was your favorite color.
+                        Thought I'd put that to good use.
+                    </p>
+                </div>
+
+                <div class="welcome-section" id="state">
+                    <p>
+                        And growing up in {{state}}? Noted.
+                    </p>
+                </div>
+
+                <div class="welcome-section" id="college">
+                    <p>
+                        I'll also remember you're rooting for {{college}}.
+                        That one could come in handy during football season.
+                    </p>
+                </div>
+
+                <div class="welcome-section closing">
+                    <p>
+                        Anyway, that's enough about the questionnaire.
+                        I'm glad you're here.
+                    </p>
+                </div>
+
+            </section>
+
+            <footer class="welcome-footer">
+
                 <p>
-                    A {{birth}} birthday. I'll keep that one in mind.
+                    More to come.
                 </p>
-            </div>
 
-            <div class="welcome-section" id="color">
-                <p>
-                    You chose {{color}} as your favorite color.
+                <p class="signature">
+                    — Stephen
                 </p>
-            </div>
 
-            <div class="welcome-section" id="state">
-                <p>
-                    You grew up in {{state}}, which tells me a little more
-                    about where you're coming from.
-                </p>
-            </div>
+                <div class="footer-brand">
+                    stephenstrang.dev
+                </div>
 
-            <div class="welcome-section" id="college">
-                <p>
-                    And when it comes to college, you're pulling for
-                    {{college}}.
-                </p>
-            </div>
+            </footer>
 
-        </section>
+        </main>
 
-        <footer class="welcome-footer">
-            <p>
-                That's enough interrogation for now. Welcome aboard.
-            </p>
-
-            <p>
-                See you around,<br>
-                Stephen
-            </p>
-        </footer>
-
-    </main>
+    </div>
 
 </body>
 

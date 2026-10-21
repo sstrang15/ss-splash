@@ -3,7 +3,8 @@ import { getWelcomeTemplate, buildWelcomeEmail } from "../emails/welcome.js"
 import { sendWelcomeEmail } from "../api/subscribe.js"
 import { getDueWelcomeSubscribers, markWelcomeSent } from "../db/database.js";
 
-const welcomeDelay = .35 * 24 * 60 * 60 * 1000;
+// const welcomeDelay = .35 * 24 * 60 * 60 * 1000;
+const welcomeDelay = 0;
 
 export async function processWelcomeEmails() {
 

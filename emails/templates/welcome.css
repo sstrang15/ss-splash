@@ -20,7 +20,7 @@
 
 body {
     margin: 0;
-    padding: 60px 20px;
+    padding: 0;
 
     background-color: var(--color-background);
     color: var(--color-text);
@@ -29,17 +29,25 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-.welcome {
+.email-canvas {
     width: 100%;
-    max-width: 620px;
+    padding: 60px 0;
+
+    background-color: var(--color-background);
+}
+
+.welcome {
+    width: 600px;
+    max-width: 100%;
     margin: 0 auto;
 
     background-color: var(--color-surface);
 
     border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-radius: 8px;
 
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 
@@ -48,39 +56,46 @@ body {
 ======================================== */
 
 .welcome-header {
-    padding: 44px 52px 54px;
+    padding: 48px 48px 56px;
 
-    background-color: var(--color-primary-light);
-    color: var(--color-primary-dark);
+    background-color: var(--color-primary-dark);
+    color: var(--color-surface);
 
     border-top: 8px solid var(--color-primary);
-    border-bottom: 1px solid var(--color-border);
 }
 
 .brand {
-    margin-bottom: 58px;
+    margin-bottom: 64px;
 
-    color: var(--color-primary-dark);
+    color: var(--color-primary-light);
 
     font-family: Arial, Helvetica, sans-serif;
     font-size: 11px;
     font-weight: 700;
 
-    letter-spacing: 3px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
 }
 
 .welcome-header h1 {
     margin: 0;
 
-    max-width: 450px;
-
-    color: var(--color-primary-dark);
+    color: var(--color-surface);
 
     font-size: 38px;
     font-weight: 400;
     line-height: 1.2;
-    letter-spacing: -1.3px;
+    letter-spacing: -1px;
+}
+
+.header-subtitle {
+    margin: 24px 0 0;
+
+    color: var(--color-primary-light);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 
@@ -89,7 +104,8 @@ body {
 ======================================== */
 
 .welcome-body {
-    padding: 52px;
+    padding: 48px;
+
     background-color: var(--color-surface);
 }
 
@@ -102,12 +118,16 @@ body {
 }
 
 .welcome-section p {
-    margin: 0;
+    margin: 0 0 16px;
 
     color: var(--color-text);
 
-    font-size: 17px;
-    line-height: 1.9;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.welcome-section p:last-child {
+    margin-bottom: 0;
 }
 
 
@@ -115,23 +135,35 @@ body {
    PERSONAL COLOR SECTION
 ======================================== */
 
-#color {
-    position: relative;
-
-    margin: 42px 0;
-    padding: 32px 36px;
+.color-feature {
+    margin: 40px 0;
+    padding: 32px;
 
     background-color: var(--color-primary-light);
 
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
+    border-left: 5px solid var(--color-primary);
+    border-radius: 4px;
 }
 
-#color p {
+.section-label {
+    display: block;
+    margin-bottom: 16px;
+
+    color: var(--color-primary-dark);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.color-feature p {
+    margin: 0;
+
     color: var(--color-primary-dark);
 
     font-size: 19px;
-    line-height: 1.7;
+    line-height: 1.6;
 }
 
 
@@ -151,30 +183,48 @@ body {
     padding-bottom: 0;
 }
 
+.closing {
+    margin-top: 36px;
+}
+
 
 /* ========================================
    FOOTER
 ======================================== */
 
 .welcome-footer {
-    padding: 48px 52px 52px;
+    padding: 44px 48px;
 
-    background-color: var(--color-primary-dark);
-    border-top: 5px solid var(--color-primary);
+    background-color: var(--color-primary-light);
+
+    border-top: 4px solid var(--color-primary);
 }
 
 .welcome-footer p {
-    margin: 0 0 28px;
+    margin: 0 0 18px;
 
-    color: var(--color-primary-light);
+    color: var(--color-primary-dark);
 
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
-.welcome-footer p:last-child {
-    margin-bottom: 0;
+.signature {
     font-style: italic;
+}
+
+.footer-brand {
+    margin-top: 40px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--color-border);
+
+    color: var(--color-text-muted);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 
@@ -184,16 +234,21 @@ body {
 
 @media screen and (max-width: 600px) {
 
-    body {
-        padding: 12px;
+    .email-canvas {
+        padding: 16px 0;
+    }
+
+    .welcome {
+        width: 100%;
+        border-radius: 0;
     }
 
     .welcome-header {
-        padding: 36px 28px 42px;
+        padding: 36px 28px 44px;
     }
 
     .brand {
-        margin-bottom: 42px;
+        margin-bottom: 44px;
     }
 
     .welcome-header h1 {
@@ -204,9 +259,8 @@ body {
         padding: 36px 28px;
     }
 
-    #color {
-        margin: 32px 0;
-        padding: 26px;
+    .color-feature {
+        padding: 24px;
     }
 
     .welcome-footer {
