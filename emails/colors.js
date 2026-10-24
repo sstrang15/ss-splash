@@ -75,8 +75,7 @@ export async function generateColorway(color) {
         return grayColorway;
     }
 
-
-    // Dynamic monochromatic generation
+    // Dynamic colorway generation
 
     const hex = normalized.replace("#", "");
 
@@ -84,26 +83,51 @@ export async function generateColorway(color) {
         throw new Error(`Invalid hex color: ${color}`);
     }
 
-    const response = await fetch(
-        `https://www.thecolorapi.com/scheme?hex=${hex}&mode=monochrome&count=8`
-    );
-
-    if (!response.ok) {
-        throw new Error("Failed to generate colorway");
-    }
-
-    const data = await response.json();
-
-    const shades = data.colors.map(color => color.hex.value);
-
     return {
-        primary: shades[5],
-        primaryDark: shades[7],
-        primaryLight: shades[1],
-        background: shades[0],
+        primary: adjustColor(color, 42),
+        primaryDark: adjustColor(color, 24),
+        primaryLight: adjustColor(color, 91, 0.55),
+        background: adjustColor(color, 97, 0.25),
         surface: "#FFFFFF",
         text: "#202020",
         textMuted: "#666666",
-        border: shades[2]
+        border: adjustColor(color, 85, 0.4)
     };
+}
+
+function adjustColor(hex, lightness, saturation = 1) {
+    const value = hex.replace("#", "");
+
+    const rgb = [0, 2, 4].map(index =>
+        parseInt(value.slice(index, index + 2), 16) / 255
+    );
+
+    const max = Math.max(...rgb);
+    const min = Math.min(...rgb);
+    const difference = max - min;
+
+    let hue = 0;
+    let sat = 0;
+    let lum = (max + min) / 2;
+
+    if (difference !== 0) {
+        sat = difference / (1 - Math.abs(2 * lum - 1));
+
+        switch (max) {
+            case rgb[0]:
+                hue = ((rgb[1] - rgb[2]) / difference) % 6;
+                break;
+            case rgb[1]:
+                hue = (rgb[2] - rgb[0]) / difference + 2;
+                break;
+            default:
+                hue = (rgb[0] - rgb[1]) / difference + 4;
+        }
+
+        hue = (hue * 60 + 360) % 360;
+    }
+
+    sat = Math.min(100, Math.round(sat * saturation * 100));
+
+    return `hsl(${Math.round(hue)}, ${sat}%, ${lightness}%)`;
 }

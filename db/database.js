@@ -72,11 +72,11 @@ export async function insertSubscriberInfo(email, followup) {
 	}
 
 	await database.connect();
-	const updateQuery = `
-	    UPDATE newsletter.subscribers
-	    SET ${key} = $1
-	    WHERE email = $2;
-	`;
+    const updateQuery = `
+        UPDATE newsletter.subscribers
+        SET ${key} = COALESCE($1, 'N/A')
+        WHERE email = $2;
+    `;
 
     await database.query(updateQuery, [answer, email]);
     console.log(`Subscriber updated: ${email}, ${key} = ${answer}`);
