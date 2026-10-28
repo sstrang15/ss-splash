@@ -1,34 +1,25 @@
-import { exemplarComparison } from "./exemplar.js";
-
-import { normalizeAnswer } from "./normalize.js";
+import { normalizeAnswer } from "../normalization/normalize.js";
 
 const tests = [
-    ["name", "sTEPHEN sTRANG"],
-    ["college", "gatech"],
-    ["birth", "September"],
-    ["birth", "septmber"],
-    ["birth", "sept"],
-    ["birth", "banana"],
-    ["car", "toytoa"],
-    ["car", "vw"],
-    ["color", "blu"],
-    ["color", "navy"],
-    ["color", "grey"],
-    ["color", "samon blue"],
-    ["car", "camry"],
-    ["car", "bmw 328i"],
-    ["car", "ford f150"],
-    ["car", "911 carrera"],
-    ["car", "98 mustang gt"]
+    ["birth", "Jul"],
+    ["birth", "7"],
+    ["birth", "Jule"],
+    ["state", "gah"],
+    ["state", "Georgia"],
+    ["state", "ga"],
+    ["carname", "Ni"],
+    ["carname", "no"],
+    ["college", "SAT"],
+    ["college", "GT"],
+    ["car", "volvo v70"],
+    ["color", "navy blue"]
 ];
 
 for (const [key, answer] of tests) {
-    const result = await normalizeAnswer(key, answer);
-
-    console.log(
-        key.padEnd(10),
-        answer.padEnd(20),
-        "→",
-        result
-    );
+    try {
+        const result = await normalizeAnswer(key, answer);
+        console.log(`${key}: "${answer}" → "${result}"`);
+    } catch (error) {
+        console.error(`${key}: "${answer}" → ERROR:`, error.message);
+    }
 }

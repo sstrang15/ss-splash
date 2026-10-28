@@ -1,6 +1,44 @@
 import { exemplarComparison } from "./exemplar.js";
 import { askOpenAI } from "./openai.js";
+import { prompts, exemplarPrompts } from "./prompts.js";
 
+const states = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+    "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+    "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas",
+    "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+    "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+    "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+    "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
+    "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
+    "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+];
+
+const stateAbbreviations = [
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+];
+
+const carExemplars = [
+    "Acura", "Alfa Romeo", "AMC", "Aston Martin", "Audi",
+    "Bentley", "BMW", "Buick", "Cadillac", "Chevrolet",
+    "Chrysler", "Citroën", "Daewoo", "Daihatsu", "Datsun",
+    "Dodge", "Ferrari", "Fiat", "Fisker", "Ford",
+    "Genesis", "Geo", "GMC", "Honda", "Hummer",
+    "Hyundai", "Infiniti", "Isuzu", "Jaguar", "Jeep",
+    "Kia", "Lamborghini", "Lancia", "Land Rover", "Lexus",
+    "Lincoln", "Lotus", "Lucid", "Maserati", "Mazda",
+    "McLaren", "Mercedes-Benz", "Mercury", "Mini", "Mitsubishi",
+    "Nissan", "Oldsmobile", "Opel", "Peugeot", "Plymouth",
+    "Polestar", "Pontiac", "Porsche", "Ram", "Renault",
+    "Rivian", "Rolls-Royce", "Saab", "Saturn", "Scion",
+    "Seat", "Škoda", "Smart", "Subaru", "Suzuki",
+    "Tesla", "Toyota", "Volkswagen", "Volvo"
+];
 
 export async function normalizeAnswer(key, answer) {
     switch (key) {
@@ -10,85 +48,105 @@ export async function normalizeAnswer(key, answer) {
                 .toLowerCase()
                 .replace(/\b\w/g, character => character.toUpperCase());
 
-        case "college":
-            return await askOpenAI(answer, [
-                "Identify the college or university.",
-                "Expand abbreviations.",
-                "Return its official name.",
-                "Return only the normalized answer."
-            ]);
+        case "college": {
+            console.log(`[OpenAI fallback] ${input}`);
+            const result = await askOpenAI(answer, prompts.college);
+
+            return result.trim().toUpperCase() === "UNKNOWN"
+                ? null
+                : result.trim();
+        }
 
         case "birth": {
-        	const exemplars = [
-        	    "January", "Jan", "Janu",
-        	    "February", "Feb", "Febr",
-        	    "March", "Mar", "Marc",
-        	    "April", "Apr", "Apri",
-        	    "May",
-        	    "June", "Jun",
-        	    "July", "Jul",
-        	    "August", "Aug", "Augu",
-        	    "September", "Sep", "Sept",
-        	    "October", "Oct", "Octo",
-        	    "November", "Nov", "Nove",
-        	    "December", "Dec", "Dece"
-        	];
+            const months = [
+                "January", "February", "March", "April",
+                "May", "June", "July", "August",
+                "September", "October", "November", "December"
+            ];
+
+            const input = String(answer).trim();
+
+            // Numeric months: 1–12, including leading zeros
+            if (/^0?[1-9]$|^1[0-2]$/.test(input)) {
+                return months[Number(input) - 1];
+            }
+
+            // Full month names and abbreviations
+            const match = months.find(
+                month =>
+                    month.toLowerCase() === input.toLowerCase() ||
+                    month.slice(0, 3).toLowerCase() === input.toLowerCase()
+            );
+
+            if (match) return match;
+
+            // Existing exemplar/OpenAI fallback for misspellings
+            const result = await normalizeWithExemplars(
+                input,
+                months,
+                prompts.birth,
+                true
+            );
+
+            return result && months.includes(result) ? result : null;
+        }
+
+        case "state": {
+            const input = String(answer).trim();
+
+            const index = states.findIndex(
+                state => state.toLowerCase() === input.toLowerCase()
+            );
+
+            if (index !== -1) return stateAbbreviations[index];
+
+            if (stateAbbreviations.includes(input.toUpperCase())) {
+                return input.toUpperCase();
+            }
+            console.log(`[OpenAI fallback] ${input}`);
+            const result = await askOpenAI(input, prompts.state);
+
+            const abbreviation = result.trim().toUpperCase();
+
+            return stateAbbreviations.includes(abbreviation)
+                ? abbreviation
+                : null;
+        }
+
+        case "car":
+            return await normalizeWithExemplars(
+                answer,
+                carExemplars,
+                prompts.car,
+                false
+            );
+  
+        case "color": {
+            const exemplars = [
+                "Red", "Orange", "Yellow", "Green",
+                "Blue", "Purple", "Pink", "Brown",
+                "Black", "White", "Gray"
+            ];
 
             return await normalizeWithExemplars(
                 answer,
                 exemplars,
-                ["Identify the month the user intended."],
-                true
+                prompts.color,
+                false
             );
         }
 
-    case "car": {
-        const exemplars = [
-            "Toyota", "Honda", "Ford", "Chevrolet",
-            "BMW", "Mercedes-Benz", "Audi", "Volkswagen",
-            "Nissan", "Hyundai", "Kia", "Mazda",
-            "Subaru", "Lexus", "Porsche", "Tesla"
-        ];
+        case "carname": {
+            const name = String(answer).trim();
 
-        return await normalizeWithExemplars(
-            answer,
-            exemplars,
-        	[
-        	    "Identify the vehicle the user owned.",
-        	    "Return the manufacturer and model when identifiable.",
-        	    "Preserve trim levels and model years when provided.",
-        	    "Expand recognizable manufacturer abbreviations.",
-        	    "Correct spelling and capitalization.",
-        	    "Do not invent missing vehicle details.",
-        	    "Return only the normalized vehicle name.",
-        	    "If the vehicle cannot be identified, return UNKNOWN."
-        	],
-            false
-        );
-    }
+            if (name.length <= 2 && name === name.toLowerCase()) {
+                return "No";
+            }
 
-    case "color": {
-        const exemplars = [
-            "Red", "Orange", "Yellow", "Green",
-            "Blue", "Purple", "Pink", "Brown",
-            "Black", "White", "Gray"
-        ];
-
-        return await normalizeWithExemplars(
-            answer,
-            exemplars,
-            [
-                "Identify and standardize the color the user intended.",
-                "Preserve specific shades such as Navy, Burgundy, and Forest Green.",
-                "When multiple colors are mentioned, prioritize the first color.",
-                "Return only the normalized name of that color.",
-                "Correct spelling and capitalization.",
-                "Never explain your reasoning."
-            ],
-            false
-        );
-    }
-
+            return name
+                .toLowerCase()
+                .replace(/\b\w/g, character => character.toUpperCase());
+        }
 
         default:
             return answer;
@@ -141,20 +199,14 @@ async function normalizeWithExemplars(
             ...instructions,
             "Choose the intended value from these exemplars:",
             exemplars.join(", "),
-            "Return only the exact exemplar.",
-            "If the answer cannot be determined, return UNKNOWN."
+            ...exemplarPrompts.strict
         ]
         : [
-		    ...instructions,
-		    "These exemplars are references, not an exhaustive list:",
-		    exemplars.join(", "),
-		    "Preserve the specificity of the user's answer.",
-		    "Do not reduce a specific answer to a broader category.",
-		    "Return only the normalized answer.",
-		    "Never explain your reasoning.",
-		    "Never ask questions.",
-		    "If the answer cannot be identified, return UNKNOWN."
-		]
+            ...instructions,
+            "These exemplars are references, not an exhaustive list:",
+            exemplars.join(", "),
+            ...exemplarPrompts.flexible
+        ]
     );
 
     if (!color) {
