@@ -78,7 +78,7 @@ export async function insertSubscriberInfo(email, followup) {
         WHERE email = $2;
     `;
 
-    await database.query(updateQuery, [answer, email]);
+    await database.query(updateQuery, [answer ?? "N/A", email]);
     console.log(`Subscriber updated: ${email}, ${key} = ${answer}`);
     await database.end();
 }

@@ -40,21 +40,37 @@ const carExemplars = [
     "Tesla", "Toyota", "Volkswagen", "Volvo"
 ];
 
+async function askOpenAISafe(answer, instructions) {
+    try {
+        const result = await askOpenAI(answer, instructions);
+
+        if (typeof result !== "string" ||
+            !result.trim() ||
+            result.trim().toUpperCase() === "UNKNOWN") {
+            return null;
+        }
+
+        return result.trim();
+
+    } catch (error) {
+        console.error(`[OpenAI error] ${answer}:`, error.message);
+        return null;
+    }
+}
+
 export async function normalizeAnswer(key, answer) {
     switch (key) {
-        case "name":
+        case "name": {
             return answer
                 .trim()
                 .toLowerCase()
                 .replace(/\b\w/g, character => character.toUpperCase());
+        }
 
         case "college": {
-            console.log(`[OpenAI fallback] ${input}`);
-            const result = await askOpenAI(answer, prompts.college);
+            console.log(`[OpenAI fallback] ${answer}`);
 
-            return result.trim().toUpperCase() === "UNKNOWN"
-                ? null
-                : result.trim();
+            return await askOpenAISafe(answer, prompts.college);
         }
 
         case "birth": {
@@ -104,9 +120,11 @@ export async function normalizeAnswer(key, answer) {
                 return input.toUpperCase();
             }
             console.log(`[OpenAI fallback] ${input}`);
-            const result = await askOpenAI(input, prompts.state);
+            const result = await askOpenAISafe(input, prompts.state);
 
-            const abbreviation = result.trim().toUpperCase();
+            if (!result) return null;
+
+            const abbreviation = result.toUpperCase();
 
             return stateAbbreviations.includes(abbreviation)
                 ? abbreviation
@@ -194,7 +212,7 @@ async function normalizeWithExemplars(
     // 4. Ask OpenAI when confidence is insufficient
     console.log(`[OpenAI fallback] ${answer}`);
 
-    const result = await askOpenAI(answer, color
+    const result = await askOpenAISafe(answer, color
         ? [
             ...instructions,
             "Choose the intended value from these exemplars:",
@@ -208,7 +226,8 @@ async function normalizeWithExemplars(
             ...exemplarPrompts.flexible
         ]
     );
-
+    if (!result) return null;
+    
     if (!color) {
     	return result.trim().toUpperCase() === "UNKNOWN"
     	    ? null
